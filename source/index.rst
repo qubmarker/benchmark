@@ -10,7 +10,7 @@ Welcome to benchmark's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-    pages/RESULTS
+   pages/result
 
 
 
