@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>QAOA Benchmark &mdash; benchmark 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="QML Benchmark" href="QML%20benchmark.html" />
+    <link rel="prev" title="Welcome to benchmark’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> benchmark
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">QAOA Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#single-thread-benchmark">Single Thread Benchmark</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#machine-info">Machine Info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#package-info">Package Info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#single-gate-benchmark">Single Gate Benchmark</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameterized-circuit-benchmark">Parameterized Circuit Benchmark</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="QML%20benchmark.html">QML Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QC%20benchmark.html">QC Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VQE%20benchmark.html">VQE Benchmark</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">benchmark</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>QAOA Benchmark</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/pages/QAOA benchmark.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="qaoa-benchmark">
+<h1>QAOA Benchmark<a class="headerlink" href="#qaoa-benchmark" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="#QAOA-benchmark-results">QAOA Benchmark Results</a></p></li>
+<li><p><a class="reference external" href="#single-thread-benchmark">Single Thread Benchmark</a></p>
+<ul>
+<li><p><a class="reference external" href="#machine-info">Machine Info</a></p></li>
+<li><p><a class="reference external" href="#package-info">Package Info</a></p></li>
+<li><p><a class="reference external" href="#single-gate-benchmark">Single Gate Benchmark</a></p></li>
+<li><p><a class="reference external" href="#parameterized-circuit-benchmark">Parameterized Circuit
+Benchmark</a></p></li>
+<li><p><a class="reference external" href="#batched-parameterized-circuit-of-yao-and-cuyao">Batched parameterized circuit of Yao and
+CuYao</a></p></li>
+</ul>
+</li>
+</ul>
+<div class="section" id="single-thread-benchmark">
+<h2>Single Thread Benchmark<a class="headerlink" href="#single-thread-benchmark" title="Permalink to this headline">¶</a></h2>
+<p>This benchmark only include single thread benchmark, all the multithread
+features are disabled.</p>
+<div class="section" id="machine-info">
+<h3>Machine Info<a class="headerlink" href="#machine-info" title="Permalink to this headline">¶</a></h3>
+<p>Julia &amp; CPU Info</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span> <span class="n">versioninfo</span><span class="p">()</span>
+<span class="n">Julia</span> <span class="n">Version</span> <span class="mf">1.3</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">Commit</span> <span class="mi">46</span><span class="n">ce4d7933</span> <span class="p">(</span><span class="mi">2019</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">26</span> <span class="mi">06</span><span class="p">:</span><span class="mi">09</span> <span class="n">UTC</span><span class="p">)</span>
+<span class="n">Platform</span> <span class="n">Info</span><span class="p">:</span>
+  <span class="n">OS</span><span class="p">:</span> <span class="n">Linux</span> <span class="p">(</span><span class="n">x86_64</span><span class="o">-</span><span class="n">pc</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="p">)</span>
+  <span class="n">CPU</span><span class="p">:</span> <span class="n">Intel</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="n">Xeon</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="n">Gold</span> <span class="mi">6230</span> <span class="n">CPU</span> <span class="o">@</span> <span class="mf">2.10</span><span class="n">GHz</span>
+  <span class="n">WORD_SIZE</span><span class="p">:</span> <span class="mi">64</span>
+  <span class="n">LIBM</span><span class="p">:</span> <span class="n">libopenlibm</span>
+  <span class="n">LLVM</span><span class="p">:</span> <span class="n">libLLVM</span><span class="o">-</span><span class="mf">6.0</span><span class="o">.</span><span class="mi">1</span> <span class="p">(</span><span class="n">ORCJIT</span><span class="p">,</span> <span class="n">skylake</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>BLAS: intel MKL</p>
+<p>Python version: 3.7.3</p>
+<p>GPU: Tesla V100</p>
+</div>
+<div class="section" id="package-info">
+<h3>Package Info<a class="headerlink" href="#package-info" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 20%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Package</p></th>
+<th class="head"><p>Version</p></th>
+<th class="head"><p>Type of Simulator</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Yao</p></td>
+<td><p>v0.6.1</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-odd"><td><p>CuYao</p></td>
+<td><p>v0.2.0</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-even"><td><p>qiskit</p></td>
+<td><p>0.16.0</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-odd"><td><p>qiskit-aer</p></td>
+<td><p>0.4.0</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-even"><td><p>qiskit-terra</p></td>
+<td><p>0.12.0</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-odd"><td><p>qulacs</p></td>
+<td><p>0.1.9</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-even"><td><p>projectq</p></td>
+<td><p>0.4.2</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cirq</p></td>
+<td><p>0.7.0</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-even"><td><p>PennyLane</p></td>
+<td><p>0.8.1</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-odd"><td><p>QuEST (pyquest-cffi)</p></td>
+<td><p>0.1.1</p></td>
+<td><p>full amplitudes</p></td>
+</tr>
+<tr class="row-even"><td><p>JKQ DDSIM¹</p></td>
+<td><p>v1.0.1a</p></td>
+<td><p>decision diagrams</p></td>
+</tr>
+</tbody>
+</table>
+<p>¹ This benchmark uses the mean estimator for the timings. To get
+accurate timings when recreating the results, please ensure no other
+other applications run concurrently.</p>
+</div>
+<div class="section" id="single-gate-benchmark">
+<h3>Single Gate Benchmark<a class="headerlink" href="#single-gate-benchmark" title="Permalink to this headline">¶</a></h3>
+<p>Benchmarks of a) Pauli-X gate; b) Hadamard gate; c) CNOT gate; d)
+Toffolli gate.</p>
+<div class="figure align-default" id="id1">
+<img alt="gates" src="../_images/gates.png" />
+<p class="caption"><span class="caption-text">gates</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id2">
+<img alt="gates-relative" src="../_images/gates_relative.png" />
+<p class="caption"><span class="caption-text">gates-relative</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="parameterized-circuit-benchmark">
+<h3>Parameterized Circuit Benchmark<a class="headerlink" href="#parameterized-circuit-benchmark" title="Permalink to this headline">¶</a></h3>
+<ol class="loweralpha simple" start="2">
+<li><p>Benchmarks of parameterized circuit. c) Benchmarks of parametrized
+circuit with batched registers (batch size = 1000).</p></li>
+</ol>
+<p>NOTE:</p>
+<ul class="simple">
+<li><p>qiskit state vector simulator does not support rotation x/z gate,
+thus there is no benchmark on the following circuits.</p></li>
+<li><p>PennyLane benchmark contains some overhead from error handling since
+we do not include measurement in this benchmark
+(<a class="reference external" href="https://github.com/Roger-luo/quantum-benchmarks/pull/7">https://github.com/Roger-luo/quantum-benchmarks/pull/7</a>)</p></li>
+<li><p>the performance of CUDA may vary on different machine
+(<a class="reference external" href="https://github.com/Roger-luo/quantum-benchmarks/issues/6">https://github.com/Roger-luo/quantum-benchmarks/issues/6</a>), although
+the difference is not very huge</p></li>
+</ul>
+<div class="figure align-default" id="id3">
+<img alt="pcircuit" src="../_images/pcircuit.png" />
+<p class="caption"><span class="caption-text">pcircuit</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id4">
+<img alt="pcircuit-relative" src="../_images/pcircuit_relative.png" />
+<p class="caption"><span class="caption-text">pcircuit-relative</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="QML%20benchmark.html" class="btn btn-neutral float-right" title="QML Benchmark" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to benchmark’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, han
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

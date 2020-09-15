@@ -1,11 +1,7 @@
-Benchmark Results
-=================
-Benchmark Results
-=================
-Benchmark Results
+VQE Benchmark
 =================
 
--  `Benchmark Results <#benchmark-results>`__
+-  `VQE Benchmark Results <#VQE-benchmark-results>`__
 -  `Single Thread Benchmark <#single-thread-benchmark>`__
 
    -  `Machine Info <#machine-info>`__

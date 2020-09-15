@@ -7,10 +7,14 @@ Welcome to benchmark's documentation!
 =====================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
-   pages/result
+   pages/QAOA benchmark
+   pages/QML benchmark
+   pages/QC benchmark
+   pages/VQE benchmark
+
 
 
 
