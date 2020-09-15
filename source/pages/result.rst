@@ -1,5 +1,9 @@
 Benchmark Results
 =================
+Benchmark Results
+=================
+Benchmark Results
+=================
 
 -  `Benchmark Results <#benchmark-results>`__
 -  `Single Thread Benchmark <#single-thread-benchmark>`__
