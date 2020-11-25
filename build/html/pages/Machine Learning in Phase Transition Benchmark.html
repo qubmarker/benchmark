@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Machine Learning in Phase Transition Benchmark &mdash; benchmark 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="VQE Benchmark" href="VQE%20benchmark.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> benchmark
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="QAOA%20benchmark.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QAOA%20benchmark.html#platform-info">2. Platform info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QAOA%20benchmark.html#benchmarking-the-standard-qaoa">3. Benchmarking the standard QAOA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QAOA%20benchmark.html#benchmarking-recursive-qaoa">4. Benchmarking recursive QAOA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QML%20benchmark.html">QML Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QC%20benchmark.html">Conventional robust quantum control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QC%20benchmark.html#geometric-quantum-control">Geometric quantum control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QC%20benchmark.html#references">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VQE%20benchmark.html">VQE Benchmark</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Machine Learning in Phase Transition Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#information">Information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#machine-info-multithread-benchmark">Machine Info: Multithread Benchmark</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python-info">Python Info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#machine-info-temporary">Machine Info (Temporary)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dataset">Dataset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ising-model">Ising model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#xy-model">XY model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ising-model-with-magnetic-field">Ising model with magnetic field</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ising-model-with-unequal-coupling">Ising model with unequal coupling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#list-of-machine-learning-methods">List of machine learning methods</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">benchmark</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Machine Learning in Phase Transition Benchmark</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/pages/Machine Learning in Phase Transition Benchmark.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="machine-learning-in-phase-transition-benchmark">
+<h1>Machine Learning in Phase Transition Benchmark<a class="headerlink" href="#machine-learning-in-phase-transition-benchmark" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="information">
+<h2>Information<a class="headerlink" href="#information" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="machine-info-multithread-benchmark">
+<h3>Machine Info: Multithread Benchmark<a class="headerlink" href="#machine-info-multithread-benchmark" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="python-info">
+<h4>Python Info<a class="headerlink" href="#python-info" title="Permalink to this headline">¶</a></h4>
+<p>Python version: 3.6.3</p>
+<p>Torch version: 1.6.0</p>
+</div>
+<div class="section" id="machine-info-temporary">
+<h4>Machine Info (Temporary)<a class="headerlink" href="#machine-info-temporary" title="Permalink to this headline">¶</a></h4>
+<p>OS: Windows 10 x64</p>
+<p>CPU: Intel(R) Xeon(R) CPU E5-2699 v4 &#64; 2.20GHz 22 Core</p>
+</div>
+</div>
+<div class="section" id="dataset">
+<h3>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h3>
+<p>Benchmarks of a) Ising model; b) XY model; c) Ising model with magnetic
+field; d) Unequal coupling Ising model; e) Diluted Ising model</p>
+<div class="section" id="ising-model">
+<h4>Ising model<a class="headerlink" href="#ising-model" title="Permalink to this headline">¶</a></h4>
+<p>Traditional 2-dimensional Ising model with periodic boundary condition.</p>
+<div class="math notranslate nohighlight">
+\[H=-J\sum_{i,j}s_i s_j\]</div>
+<p>, <span class="math notranslate nohighlight">\(s_i,s_j \in \{-1,1\}\)</span>, <span class="math notranslate nohighlight">\(&lt;i,j&gt;\)</span> are nearest neighbors.</p>
+<p>Here we assume <span class="math notranslate nohighlight">\(J=1\)</span>, so there is a phase transition from order
+phase to disorder phase in critical temperature point
+<span class="math notranslate nohighlight">\(T_c=\frac{2}{\ln (1+\sqrt 2)}\approx2.269\)</span>.</p>
+<p>We have three Ising model datasets, with size 8x8, 12x12 and 16x16. The
+dataset is generated by cluster algorithm (Wolff algorithm).</p>
+<p>Each dataset concludes 5 columns: Temperature(‘temperature’),
+Configuration(‘conf’), Specific Heat Capacity(‘cv’),
+Susceptibility(‘sus’) and Average magnetization(‘m’)</p>
+<p>Average magnetization: <span class="math notranslate nohighlight">\(m=\sum_i s_i /N\)</span></p>
+<p>Susceptibility:</p>
+<div class="math notranslate nohighlight">
+\[\chi=\frac{(\langle m\rangle^2-\langle m^2 \rangle)}{T}\]</div>
+<p>Specific Heat Capacity:
+<span class="math notranslate nohighlight">\(C_V=\frac{(\langle m\rangle^2-\langle m^2 \rangle)}{T^2 N}\)</span></p>
+<p>Each dataset has 216320 data points. Temperature range is from 0.001 to
+4.499.</p>
+<p>For temperature in <span class="math notranslate nohighlight">\(T\in [2.2,2.3]\)</span>, the temperature gap is
+0.0001. For temperature out of the range, the gap is 0.001.</p>
+<p>Each temperature has 40 configurations. In each temperature, the
+configuration is initialized by random, and after 50000 Monte Carlo
+steps to evolve. Then each 5000 Monte Carlo steps will give 1
+configuration.</p>
+</div>
+<div class="section" id="xy-model">
+<h4>XY model<a class="headerlink" href="#xy-model" title="Permalink to this headline">¶</a></h4>
+<p>Traditional 2-dimensional XY model with periodic boundary condition.</p>
+<p><span class="math notranslate nohighlight">\(H=-J\sum_{i,j} \vec s_i \cdot \vec s_j\)</span>,
+<span class="math notranslate nohighlight">\(\vec s_i=(\cos \theta_i , \sin \theta_i)\)</span> ,<span class="math notranslate nohighlight">\(&lt;i,j&gt;\)</span> are
+nearest neighbors.</p>
+<p>There is not a conventional phase transition present that would be
+associated with <a class="reference external" href="https://en.wikipedia.org/wiki/Symmetry_breaking">symmetry
+breaking</a>. The
+system does show signs of a transition from a disordered
+high-temperature state to a quasi-ordered state below some critical
+temperature, called the <a class="reference external" href="https://en.wikipedia.org/wiki/Kosterlitz-Thouless_transition">Kosterlitz-Thouless
+transition</a>.</p>
+<p>Approximately, there has a critical temperature
+<span class="math notranslate nohighlight">\(\frac{2T_c}{J}\ln \frac{2T_c}{J}=1\)</span> and
+<span class="math notranslate nohighlight">\(T_c/J\approx 0.8816\)</span>.</p>
+<p>The dataset concludes 4 columns: Temperature(‘temperature’),
+Configuration(‘conf’), Average magnetization(‘m’) and squared
+magnetization (ms)</p>
+<p>average magnetization:
+<span class="math notranslate nohighlight">\(m=|\langle(\sum_i \cos\theta_i , \sum_i \sin\theta_i)\rangle|/N\)</span></p>
+<p>squared magnetization:
+<span class="math notranslate nohighlight">\(m^2 =\frac{1}{N^2}\langle(\sum_i \cos\theta_i)^2+(\sum_i\sin\theta_i)^2 \rangle\)</span></p>
+<p>The dataset has 200000 data points. Temperature range from 0.02 to 5.02,
+temperature gap is 0.001, each temperature has 40 configurations. In
+each temperature, the configuration is initialized by random, and after
+50000 Monte Carlo steps to evolve. Then each 5000 Monte Carlo steps will
+give 1 configuration.</p>
+</div>
+<div class="section" id="ising-model-with-magnetic-field">
+<h4>Ising model with magnetic field<a class="headerlink" href="#ising-model-with-magnetic-field" title="Permalink to this headline">¶</a></h4>
+<p>Traditional 2-dimensional Ising model in magnetic field with periodic
+boundary condition.</p>
+<div class="math notranslate nohighlight">
+\[H=-J\sum_{i,j}s_i s+h\sum_i s_i\]</div>
+<p>, <span class="math notranslate nohighlight">\(s_i,s_j \in \{-1,1\}\)</span>, <span class="math notranslate nohighlight">\(&lt;i,j&gt;\)</span> are nearest neighbors.</p>
+<p>At a constant temperature, the model will have or not have a phase
+transition when <span class="math notranslate nohighlight">\(h\)</span> varies from minus to plus. At <span class="math notranslate nohighlight">\(T&lt;T_c\)</span>,
+there is a phase transition at <span class="math notranslate nohighlight">\(h=0\)</span> and a delay phenomenon. At
+<span class="math notranslate nohighlight">\(T&gt;T_c\)</span> there is no phase transition.</p>
+<p>The dataset has three columns. Configuration (‘conf’), out magnetic
+field (‘mag’) and magnetization (‘m’).</p>
+<p>Average magnetization: <span class="math notranslate nohighlight">\(m=\sum_i s_i /N\)</span></p>
+<p>The dataset has 200000 data points. out magnetic field range from -6.02
+to 6.02, field gap is 0.0024, each temperature has 40 configurations. In
+each magnetic field, the configuration is initialized by random, and
+after 50000 Monte Carlo steps to evolve. Then each 5000 Monte Carlo
+steps will give 1 configuration.</p>
+</div>
+<div class="section" id="ising-model-with-unequal-coupling">
+<h4>Ising model with unequal coupling<a class="headerlink" href="#ising-model-with-unequal-coupling" title="Permalink to this headline">¶</a></h4>
+<p>Traditional 2-dimensional Ising model with unequal coupling with
+periodic boundary condition.</p>
+<div class="math notranslate nohighlight">
+\[H=-J_x\sum_{i,j}s_{i,j} s_{i+1,j}-J_y\sum_{i,j}s_{i,j} s_{i,j+1}\]</div>
+<p>, <span class="math notranslate nohighlight">\(s_i,s_j \in \{-1,1\}\)</span></p>
+<p>Here we assume <span class="math notranslate nohighlight">\(J_x=1\)</span>, so there is a phase transition from order
+phase to disorder phase in critical temperature point <span class="math notranslate nohighlight">\(T_c \)</span>sinh(2/T_c)sinh(2J_y/T_c)=1`.</p>
+<p>The dataset has three columns. Configuration (‘conf’),
+Temperature(‘temperature’) and magnetization (‘m’).</p>
+<p>Average magnetization: <span class="math notranslate nohighlight">\(m=\sum_i s_i /N\)</span></p>
+<p>The dataset has 200000 data points. Temperature range from 0.02 to 6.02,
+field gap is 0.0012, each temperature has 40 configurations. In each
+magnetic field, the configuration is initialized by random, and after
+50000 Monte Carlo steps to evolve. Then each 5000 Monte Carlo steps will
+give 1 configuration.</p>
+</div>
+</div>
+</div>
+<div class="section" id="list-of-machine-learning-methods">
+<h2>List of machine learning methods<a class="headerlink" href="#list-of-machine-learning-methods" title="Permalink to this headline">¶</a></h2>
+<p>Confusion Learning: W-shape accuracy curve</p>
+<p>Full Connection Neural Network</p>
+<p>Code: Done</p>
+<p>Data: Ising model, size 8x8, total 200000 figure</p>
+<p>Training: 193214s=53h40m</p>
+<p>Accuracy: T = 2.4-2.8</p>
+<p>Generalize: Not good</p>
+<p>Unsupervised Learning of Phase Transitions: From Principal Component
+Analysis to Variational Autoencoders</p>
+<p>Unsupervised Learning: PCA and Autoencoder</p>
+<p>Parameters in PCA or autoencoder are close approximation to the
+magnetization</p>
+<p>No indicator, no benchmarking</p>
+<p>Code: PCA: Done, Variational Autoencoder: No</p>
+<p>Data: Ising model, size 8x8/4x4, each 200000 figure</p>
+<p>PCA: Reproduced, Variational Autoencoder: No</p>
+<p>Discovering Phases, Phase Transitions and Crossovers through
+Unsupervised Machine Learning: A critical examination</p>
+<p>Unsupervised Learning: PCA and Autoencoder</p>
+<p>Parameters in PCA are close approximation to the magnetization AND
+susceptibility</p>
+<p>No indicator, no benchmarking</p>
+<p>Code: PCA: Done, Variational Autoencoder: No</p>
+<p>Data: Ising model, size 8x8/4x4, each 200000 figure</p>
+<p>PCA: Reproduced, Variational Autoencoder: No</p>
+<p>Self-Learning Phase Boundary by Active Contours</p>
+<p>Confusion Scheme</p>
+<p>Guesser – Learner:</p>
+<p>Code: Writing</p>
+<p>Data: Ising model, size 8x8, total 20000 figure</p>
+<p>​ Ising model, size 8x8, each 200000 figure</p>
+<p>Quantum phase recognition via unsupervised machine learning</p>
+<p>Parameter Window</p>
+<p>Code: Done</p>
+<p>Data: Ising model, size 8x8, each 200000 figure</p>
+<p>Training: 29882s / 5125s</p>
+<p>Machine Learning Vortices at the Kosterlitz-Thouless Transition</p>
+<p>One Layer Network</p>
+<p>Convolution Neural Network</p>
+<p>Learn by confusion: W-Shape Curve</p>
+<p>Code: Done</p>
+<p>Data: Ising model, size 8x8, each 200000 figure</p>
+<p>Training: Small dataset</p>
+<p>Deep Neural Network Detects Quantum Phase Transition</p>
+<p>Multi Layer Perceptrons</p>
+<p>Learning thermodynamic variables</p>
+<p>Weights of layers can fit transition point (tanh)</p>
+<p>Code: Done</p>
+<p>Data: Ising model, size 8x8, total 200000 figure</p>
+<p>​ vh model, size 8x8, total 3000 figure</p>
+<p>Training: In small dataset, very slow, need fix</p>
+<p>Machine Learning of Phase Transitions in the Percolation and XY Models</p>
+<p>Site and Bond Percolations / XY model</p>
+<p>FCN / CNN / Cluster Identifying</p>
+<p>Code: Done</p>
+<p>Data: Ising model, size 8x8, total 200000 figure</p>
+<p>​ XY model, 200000 figure, genreating</p>
+<p>​ Percolations, not ready</p>
+<p>Training: Waiting</p>
+<p>Identifying Quantum Phase Transitions Using Artificial Neural Networks
+on Experimental Data</p>
+<p>Experimental Haldane Model</p>
+<p>FCN / CNN / Cluster Identifying</p>
+<p>Self-Organizing Maps as a Method for Detecting Phase Transitions and
+Phase Identification</p>
+<p>2D FM model</p>
+<p>Self-Organizing Maps – Unsupervised Learning</p>
+<p>Topological Phase Transition</p>
+<p>Divergence of Predictive Model Output as Indication of Phase Transitions</p>
+<p>S(T) è T</p>
+<p>MSE loss function</p>
+<p>δT will have a maximum at phase transition point</p>
+<p>Code: Draft</p>
+<p>Data: Small dataset</p>
+<p>Train: not good result</p>
+<p>Phase Transition Encoded in Neural Network</p>
+<p>Toy model: one hidden layer three neuron</p>
+<p>Hidden layer neurons have physical meaning</p>
+<p>Code: Done</p>
+<p>Data: Small dataset</p>
+<p>Train: Reproduced</p>
+<p>Machine Learning as a Universal Tool for Quantitative Investigations of
+Phase Transition</p>
+<p>Support Vector Machine</p>
+<p>Textbook-like, critical exponents</p>
+<p>Code: draft</p>
+<p>Data: Small dataset</p>
+<p>Train: Reproduced in small dataset</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="VQE%20benchmark.html" class="btn btn-neutral float-left" title="VQE Benchmark" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, han
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

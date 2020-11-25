@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>QAOA Benchmark &mdash; benchmark 0.0.1 documentation</title>
+  <title>QAOA benchmark &mdash; benchmark 0.0.1 documentation</title>
   
 
   
@@ -30,6 +30,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,19 +85,30 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">QAOA Benchmark</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#single-thread-benchmark">Single Thread Benchmark</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#machine-info">Machine Info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#package-info">Package Info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#single-gate-benchmark">Single Gate Benchmark</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#parameterized-circuit-benchmark">Parameterized Circuit Benchmark</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">QAOA benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">1. Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#qaoa">1.1 QAOA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#max-cut-problem">1.2 Max Cut Problem</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#platform-info">2. Platform info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#benchmarking-the-standard-qaoa">3. Benchmarking the standard QAOA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#setting">3.1 Setting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#results">3.2 Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#benchmarking-recursive-qaoa">4. Benchmarking recursive QAOA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4.1 Setting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">4.2 Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="QML%20benchmark.html">QML Benchmark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="QC%20benchmark.html">QC Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QC%20benchmark.html">QC benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="VQE%20benchmark.html">VQE Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Machine%20Learning%20in%20Phase%20Transition%20Benchmark.html">Machine Learning in Phase Transition Benchmark</a></li>
 </ul>
 
             
@@ -143,7 +155,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>QAOA Benchmark</li>
+      <li>QAOA benchmark</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -163,147 +175,273 @@
            <div itemprop="articleBody">
             
   <div class="section" id="qaoa-benchmark">
-<h1>QAOA Benchmark<a class="headerlink" href="#qaoa-benchmark" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p><a class="reference external" href="#QAOA-benchmark-results">QAOA Benchmark Results</a></p></li>
-<li><p><a class="reference external" href="#single-thread-benchmark">Single Thread Benchmark</a></p>
-<ul>
-<li><p><a class="reference external" href="#machine-info">Machine Info</a></p></li>
-<li><p><a class="reference external" href="#package-info">Package Info</a></p></li>
-<li><p><a class="reference external" href="#single-gate-benchmark">Single Gate Benchmark</a></p></li>
-<li><p><a class="reference external" href="#parameterized-circuit-benchmark">Parameterized Circuit
-Benchmark</a></p></li>
-<li><p><a class="reference external" href="#batched-parameterized-circuit-of-yao-and-cuyao">Batched parameterized circuit of Yao and
-CuYao</a></p></li>
-</ul>
-</li>
-</ul>
-<div class="section" id="single-thread-benchmark">
-<h2>Single Thread Benchmark<a class="headerlink" href="#single-thread-benchmark" title="Permalink to this headline">¶</a></h2>
-<p>This benchmark only include single thread benchmark, all the multithread
-features are disabled.</p>
-<div class="section" id="machine-info">
-<h3>Machine Info<a class="headerlink" href="#machine-info" title="Permalink to this headline">¶</a></h3>
-<p>Julia &amp; CPU Info</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span> <span class="n">versioninfo</span><span class="p">()</span>
-<span class="n">Julia</span> <span class="n">Version</span> <span class="mf">1.3</span><span class="o">.</span><span class="mi">0</span>
-<span class="n">Commit</span> <span class="mi">46</span><span class="n">ce4d7933</span> <span class="p">(</span><span class="mi">2019</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">26</span> <span class="mi">06</span><span class="p">:</span><span class="mi">09</span> <span class="n">UTC</span><span class="p">)</span>
-<span class="n">Platform</span> <span class="n">Info</span><span class="p">:</span>
-  <span class="n">OS</span><span class="p">:</span> <span class="n">Linux</span> <span class="p">(</span><span class="n">x86_64</span><span class="o">-</span><span class="n">pc</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="p">)</span>
-  <span class="n">CPU</span><span class="p">:</span> <span class="n">Intel</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="n">Xeon</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="n">Gold</span> <span class="mi">6230</span> <span class="n">CPU</span> <span class="o">@</span> <span class="mf">2.10</span><span class="n">GHz</span>
-  <span class="n">WORD_SIZE</span><span class="p">:</span> <span class="mi">64</span>
-  <span class="n">LIBM</span><span class="p">:</span> <span class="n">libopenlibm</span>
-  <span class="n">LLVM</span><span class="p">:</span> <span class="n">libLLVM</span><span class="o">-</span><span class="mf">6.0</span><span class="o">.</span><span class="mi">1</span> <span class="p">(</span><span class="n">ORCJIT</span><span class="p">,</span> <span class="n">skylake</span><span class="p">)</span>
-</pre></div>
+<h1>QAOA benchmark<a class="headerlink" href="#qaoa-benchmark" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="qaoa">
+<h3>1.1 QAOA<a class="headerlink" href="#qaoa" title="Permalink to this headline">¶</a></h3>
+<p>In 2014， Farhi et al. proposed the quantum approximate optimization
+algorithm (<a class="reference external" href="#Farhi14">QAOA</a>) which is a variational quantum algorithm
+aiming at solving combinatorial optimization problems by a parameterized
+quantum circuit. Most of the combinatorial optimization problems can be
+encoded into some special Hamiltonians (which are diagonal under the Z
+basis) such that solving the original problems is equivalent to finding
+the ground states of their corresponding Hamitonians.</p>
+<p>More specifically, let <span class="math notranslate nohighlight">\(H_Z\)</span> be the problem Hamitonian of
+<span class="math notranslate nohighlight">\(n\)</span> qubit which is diagonal in the <span class="math notranslate nohighlight">\(Z\)</span> basis and
+<span class="math notranslate nohighlight">\(H_X=\sum_{j=1}^n X_j\)</span> be the mixer. Fix an integer <span class="math notranslate nohighlight">\(p\)</span>, the
+<span class="math notranslate nohighlight">\(p\)</span>-th step of QAOA is defined as follows. Set
+<span class="math notranslate nohighlight">\(\boldsymbol{\beta}=(\beta_1,\beta_2,\cdots,\beta_p)\)</span>,
+<span class="math notranslate nohighlight">\(\boldsymbol{\gamma}=(\gamma_1, \gamma_2,\cdots, \gamma_p)\)</span> and
+define the ansatz as</p>
+<div class="math notranslate nohighlight">
+\[|\psi({\boldsymbol{\beta}},{\boldsymbol{\gamma}})\rangle=U(H_X,\beta_p)U(H_Z,\gamma_p)\cdots U(H_X,\beta_1)U(H_Z,\gamma_1)|{+}\rangle^{\otimes n}\]</div>
+<p>where <span class="math notranslate nohighlight">\(U(H,\alpha) = e^{-i\alpha H}\)</span> and
+<span class="math notranslate nohighlight">\(|{+}\rangle = \frac{1}{\sqrt{2}}(|{0}\rangle + |{1}\rangle)\)</span>.
+Define</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}  F_p:=\max_{\boldsymbol{\beta},{\boldsymbol{\gamma}}}    F_p(\boldsymbol{\beta},{\boldsymbol{\gamma}}) =\max_{\boldsymbol{\beta},\boldsymbol{\gamma}} \langle{\psi(\boldsymbol{\beta},\boldsymbol{\gamma})}|H_Z|\psi(\boldsymbol{\beta},\boldsymbol{\gamma})\rangle.\\Then it can be showed that the following equality holds:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[\lim_{p\rightarrow+\infty} F_p=\max_{|\psi\rangle}\{ \langle \psi| H_Z|\psi\rangle\}.\]</div>
+<p>Given <span class="math notranslate nohighlight">\(H_Z\)</span>, denote
+<span class="math notranslate nohighlight">\(W:=\max_{|\psi\rangle}\{ \langle \psi| H_Z|\psi\rangle\}\)</span> as the
+maximum solution to the optimization problem, which is assumed to be
+positive. Then the approximate ratio of <span class="math notranslate nohighlight">\(p\)</span>-level QAOA on this
+problem is defined as <span class="math notranslate nohighlight">\(\frac{F_p}{W}\)</span>, which is always less than
+one.</p>
 </div>
-<p>BLAS: intel MKL</p>
-<p>Python version: 3.7.3</p>
-<p>GPU: Tesla V100</p>
+<div class="section" id="max-cut-problem">
+<h3>1.2 Max Cut Problem<a class="headerlink" href="#max-cut-problem" title="Permalink to this headline">¶</a></h3>
+<p>A canonical example of combinatorial optimization problem is Max Cut.
+The problem is defined as follows. Let <span class="math notranslate nohighlight">\(G = (V, E)\)</span> be a simple
+undirected graph. A cut is a function <span class="math notranslate nohighlight">\(c : V \rightarrow\{1, -1\}\)</span>
+that labels the nodes with symbols <span class="math notranslate nohighlight">\(1\)</span> and <span class="math notranslate nohighlight">\(-1\)</span>. An edge
+<span class="math notranslate nohighlight">\((i, j) \in E\)</span> is a cut edge if <span class="math notranslate nohighlight">\(c(i) \neq  c(j).\)</span> Let
+<span class="math notranslate nohighlight">\(N(c)\)</span> denote the number of the cutting edges. Then the classical
+Max Cut problem is to find a function <span class="math notranslate nohighlight">\(c\)</span> with maximal cutting
+edges <span class="math notranslate nohighlight">\(N(c)\)</span>. That is,</p>
+<div class="math notranslate nohighlight">
+\[\max_{c} N(c)=\max_{c} \sum_{(i, j) \in E} [1-c(i)c(j)]/2.\]</div>
+<div class="line-block">
+<div class="line">More general, we may consider a graph <span class="math notranslate nohighlight">\(G = (V, E)\)</span> with</div>
 </div>
-<div class="section" id="package-info">
-<h3>Package Info<a class="headerlink" href="#package-info" title="Permalink to this headline">¶</a></h3>
+<p>weighting edges <span class="math notranslate nohighlight">\(\omega: E \rightarrow [-1,1].\)</span> Then the
+corresponding Max Cut problem is to find a cut <span class="math notranslate nohighlight">\(c\)</span> maximize the
+following term
+|</p>
+<div class="math notranslate nohighlight">
+\[\max_{c} \sum_{(i, j) \in E} w(i,j) [1-c(i)c(j)]/2.\]</div>
+</div>
+</div>
+<div class="section" id="platform-info">
+<h2>2. Platform info<a class="headerlink" href="#platform-info" title="Permalink to this headline">¶</a></h2>
+<p>OS: CPU: BLAS: LIBM: GPU:</p>
+<p>Below is the information of the packages used.</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 43%" />
-<col style="width: 20%" />
-<col style="width: 38%" />
+<col style="width: 52%" />
+<col style="width: 48%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Package</p></th>
 <th class="head"><p>Version</p></th>
-<th class="head"><p>Type of Simulator</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Yao</p></td>
-<td><p>v0.6.1</p></td>
-<td><p>full amplitudes</p></td>
+<tr class="row-even"><td><p>Python</p></td>
+<td><p>2.7.12</p></td>
 </tr>
-<tr class="row-odd"><td><p>CuYao</p></td>
-<td><p>v0.2.0</p></td>
-<td><p>full amplitudes</p></td>
+<tr class="row-odd"><td><p>NumPy</p></td>
+<td><p>1.18.3</p></td>
 </tr>
-<tr class="row-even"><td><p>qiskit</p></td>
-<td><p>0.16.0</p></td>
-<td><p>full amplitudes</p></td>
+<tr class="row-even"><td><p>SciPy</p></td>
+<td><p>1.4.1</p></td>
 </tr>
-<tr class="row-odd"><td><p>qiskit-aer</p></td>
-<td><p>0.4.0</p></td>
-<td><p>full amplitudes</p></td>
+<tr class="row-odd"><td><p>projectq</p></td>
+<td><p>0.5.0</p></td>
 </tr>
-<tr class="row-even"><td><p>qiskit-terra</p></td>
-<td><p>0.12.0</p></td>
-<td><p>full amplitudes</p></td>
-</tr>
-<tr class="row-odd"><td><p>qulacs</p></td>
-<td><p>0.1.9</p></td>
-<td><p>full amplitudes</p></td>
-</tr>
-<tr class="row-even"><td><p>projectq</p></td>
-<td><p>0.4.2</p></td>
-<td><p>full amplitudes</p></td>
-</tr>
-<tr class="row-odd"><td><p>Cirq</p></td>
-<td><p>0.7.0</p></td>
-<td><p>full amplitudes</p></td>
-</tr>
-<tr class="row-even"><td><p>PennyLane</p></td>
-<td><p>0.8.1</p></td>
-<td><p>full amplitudes</p></td>
-</tr>
-<tr class="row-odd"><td><p>QuEST (pyquest-cffi)</p></td>
-<td><p>0.1.1</p></td>
-<td><p>full amplitudes</p></td>
-</tr>
-<tr class="row-even"><td><p>JKQ DDSIM¹</p></td>
-<td><p>v1.0.1a</p></td>
-<td><p>decision diagrams</p></td>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
 </tr>
 </tbody>
 </table>
-<p>¹ This benchmark uses the mean estimator for the timings. To get
-accurate timings when recreating the results, please ensure no other
-other applications run concurrently.</p>
 </div>
-<div class="section" id="single-gate-benchmark">
-<h3>Single Gate Benchmark<a class="headerlink" href="#single-gate-benchmark" title="Permalink to this headline">¶</a></h3>
-<p>Benchmarks of a) Pauli-X gate; b) Hadamard gate; c) CNOT gate; d)
-Toffolli gate.</p>
-<div class="figure align-default" id="id1">
-<img alt="gates" src="../_images/gates.png" />
-<p class="caption"><span class="caption-text">gates</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<div class="section" id="benchmarking-the-standard-qaoa">
+<h2>3. Benchmarking the standard QAOA<a class="headerlink" href="#benchmarking-the-standard-qaoa" title="Permalink to this headline">¶</a></h2>
+<p>Here and below, we refer to standard QAOA as the one proposed in <a class="reference external" href="#Harhi14">Farhi
+et al.’s paper</a>. In the standard QAOA, the mixer is chosen
+to be <span class="math notranslate nohighlight">\(H_X = \sum_i X_i\)</span>.</p>
+<div class="section" id="setting">
+<h3>3.1 Setting<a class="headerlink" href="#setting" title="Permalink to this headline">¶</a></h3>
+<p><strong>Classical optimizer</strong>:
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.minimize-slsqp.html">SLSQP</a></p>
+<p><strong>Random graphs generation</strong>: <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.random_graphs.gnp_random_graph.html">Erdos-Renyi
+graphs</a>
+with prob = 0.4, seed_set =
+{123,231,245,114,523,567,457,129,325,657,554,234,226,347,128,193,456,753,248,675}</p>
+<p><strong>Strategy for optimization:</strong> Running the QAOA for <span class="math notranslate nohighlight">\(p=1\)</span> with 50
+times and chose an optimal solution. The running time corresponds to
+this optimal one. The intial parameters in depth <span class="math notranslate nohighlight">\(p+1\)</span> QAOA depend
+on those of the “optimal ones” in the depth <span class="math notranslate nohighlight">\(p\)</span> QAOA.
+Specifically, <span class="math notranslate nohighlight">\(\beta^{(p+1)}_i={\beta *}^{(p)}_i\)</span> for
+<span class="math notranslate nohighlight">\(i=1,\cdots,p\)</span> and
+<span class="math notranslate nohighlight">\(\beta^{(p+1)}_{p+1}={\beta  *}^{(p)}_{p}\)</span>.</p>
 </div>
-<div class="figure align-default" id="id2">
-<img alt="gates-relative" src="../_images/gates_relative.png" />
-<p class="caption"><span class="caption-text">gates-relative</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<div class="section" id="results">
+<h3>3.2 Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h3>
+<center><div class="figure align-default">
+<img alt="../_images/q1.jpg" src="../_images/q1.jpg" />
 </div>
+  <div>
+
+Figure 3.1: time vs. :math:`p` for :math:`n=7—12`</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
 </div>
-<div class="section" id="parameterized-circuit-benchmark">
-<h3>Parameterized Circuit Benchmark<a class="headerlink" href="#parameterized-circuit-benchmark" title="Permalink to this headline">¶</a></h3>
-<ol class="loweralpha simple" start="2">
-<li><p>Benchmarks of parameterized circuit. c) Benchmarks of parametrized
-circuit with batched registers (batch size = 1000).</p></li>
-</ol>
-<p>NOTE:</p>
+</center>
+
+
+<center><div class="figure align-default">
+<img alt="../_images/q2.jpg" src="../_images/q2.jpg" />
+</div>
+<div><p>Figure 3.2: time vs. <span class="math notranslate nohighlight">\(n\)</span> for <span class="math notranslate nohighlight">\(p=1,2,3,4,5\)</span></p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center>
+
+
+
+<center><div class="figure align-default">
+<img alt="../_images/q3.jpg" src="../_images/q3.jpg" />
+</div>
+<div><p>Figure 3.3: approximation ratio vs. <span class="math notranslate nohighlight">\(p\)</span> for <span class="math notranslate nohighlight">\(n=7—12\)</span></p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center>
+
+<center><div class="figure align-default">
+<img alt="../_images/q4.jpg" src="../_images/q4.jpg" />
+</div>
+<div><p>Figure 3.4: approximation ratio vs. <span class="math notranslate nohighlight">\(n\)</span> for
+<span class="math notranslate nohighlight">\(p = 1,2,3,4,5\)</span></p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center>
+
+
+<center><div class="figure align-default">
+<img alt="../_images/q5.jpg" src="../_images/q5.jpg" />
+</div>
+  <div>
+
+Figure 3.5: number of iterations vs. :math:`p` for :math:`n=7—12`\</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center><center><div class="figure align-default">
+<img alt="../_images/q6.jpg" src="../_images/q6.jpg" />
+</div>
+<div><p>Figure 3.6: number of iterations vs. <span class="math notranslate nohighlight">\(n\)</span> for <span class="math notranslate nohighlight">\(p=1,2,3,4,5\)</span></p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center></div>
+</div>
+<div class="section" id="benchmarking-recursive-qaoa">
+<h2>4. Benchmarking recursive QAOA<a class="headerlink" href="#benchmarking-recursive-qaoa" title="Permalink to this headline">¶</a></h2>
+<p>Here, we compare the performance of <a class="reference external" href="#Bravyi19">RQAOA</a> with the
+standard QAOA. Roughly speaking, RQAOA is a method to recursively run
+QAOA and reduce the problem size by 1 at each recursion. It is argued
+that RQAOA outperforms the standard QAOA.</p>
+<div class="section" id="id1">
+<h3>4.1 Setting<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p><strong>Classical optimizer</strong>:
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.minimize-lbfgsb.html">L-BFGS-B</a></p>
+<p><strong>Random graphs generation</strong>: We use two methods to generate random
+graphs - <a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.random_graphs.random_regular_graph.html">random regular
+graphs</a></p>
 <ul class="simple">
-<li><p>qiskit state vector simulator does not support rotation x/z gate,
-thus there is no benchmark on the following circuits.</p></li>
-<li><p>PennyLane benchmark contains some overhead from error handling since
-we do not include measurement in this benchmark
-(<a class="reference external" href="https://github.com/Roger-luo/quantum-benchmarks/pull/7">https://github.com/Roger-luo/quantum-benchmarks/pull/7</a>)</p></li>
-<li><p>the performance of CUDA may vary on different machine
-(<a class="reference external" href="https://github.com/Roger-luo/quantum-benchmarks/issues/6">https://github.com/Roger-luo/quantum-benchmarks/issues/6</a>), although
-the difference is not very huge</p></li>
+<li><p><a class="reference external" href="https://networkx.org/documentation/stable/reference/generated/networkx.generators.random_graphs.gnp_random_graph.html">Erdos-Renyi
+graphs</a>
+with prob = 0.65, seed_set
+={5,13,48,53,58,70,89,91,100,104,123,140,150,169,182,200,210,220,227,230}</p></li>
 </ul>
-<div class="figure align-default" id="id3">
-<img alt="pcircuit" src="../_images/pcircuit.png" />
-<p class="caption"><span class="caption-text">pcircuit</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-<div class="figure align-default" id="id4">
-<img alt="pcircuit-relative" src="../_images/pcircuit_relative.png" />
-<p class="caption"><span class="caption-text">pcircuit-relative</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<div class="section" id="id2">
+<h3>4.2 Results<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<center><div class="figure align-default">
+<img alt="../_images/q7.png" src="../_images/q7.png" />
 </div>
+<div><p>Figure 4.1: approximate ratio of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span>
+of 20 instances on random regular graphs <span class="math notranslate nohighlight">\((n=15,d=6)\)</span>.</p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
 </div>
+</center><center><div class="figure align-default">
+<img alt="../_images/q8.png" src="../_images/q8.png" />
+</div>
+<div><p>Figure 4.2: time consumed for RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span> of
+20 instances on random regular graphs <span class="math notranslate nohighlight">\((n=15,d=6)\)</span>.</p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center><center><div class="figure align-default">
+<img alt="../_images/q9.png" src="../_images/q9.png" />
+</div>
+<div><p>Figure 4.3: approximate ratio of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span>
+of 20 instances on Erdos-Renyi graphs with <span class="math notranslate nohighlight">\(n=10\)</span> nodes.</p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center>
+
+
+
+<center><div class="figure align-default">
+<img alt="../_images/q10.png" src="../_images/q10.png" />
+</div>
+<div><p>Figure 4.4: Iterations of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span> of 20
+instances on Erdos-Renyi graphs with <span class="math notranslate nohighlight">\(n=10\)</span> nodes.</p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center>
+
+
+
+
+
+
+<center><div class="figure align-default">
+<img alt="../_images/q11.png" src="../_images/q11.png" />
+</div>
+<div><p>Figure 4.5: approximate ratio of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span>
+of 20 instances on Erdos-Renyi graphs with <span class="math notranslate nohighlight">\(n=6-11\)</span> nodes.</p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center><center><div class="figure align-default">
+<img alt="../_images/q12.png" src="../_images/q12.png" />
+</div>
+<div><p>Figure 4.6: Iterations of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span> of 20
+instances on Erdos-Renyi graphs with <span class="math notranslate nohighlight">\(n=6-11\)</span> nodes.</p>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</center></div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>[Farhi14] Edward Farhi, Jeffrey Goldstone, Sam Gutmann. A Quantum</p>
+</div></blockquote>
+<p>Approximate Optimization Algorithm, arXiv:1411.4028.</p>
+<blockquote>
+<div><p>[Bravyi19] Sergey Bravyi, Alexander Kliesch, Robert Koenig, and Eugene</p>
+</div></blockquote>
+<p>Tang, Obstacles to State Preparation and Variational Optimization from
+Symmetry Protection, arXiv:1910.08980v1.</p>
 </div>
 </div>
 

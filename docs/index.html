@@ -30,13 +30,14 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="QAOA Benchmark" href="pages/QAOA%20benchmark.html" /> 
+    <link rel="next" title="QAOA benchmark" href="pages/QAOA%20benchmark.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,10 +84,11 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pages/QAOA%20benchmark.html">QAOA Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/QAOA%20benchmark.html">QAOA benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/QML%20benchmark.html">QML Benchmark</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pages/QC%20benchmark.html">QC Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/QC%20benchmark.html">QC benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pages/VQE%20benchmark.html">VQE Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/Machine%20Learning%20in%20Phase%20Transition%20Benchmark.html">Machine Learning in Phase Transition Benchmark</a></li>
 </ul>
 
             
@@ -157,14 +159,24 @@
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pages/QAOA%20benchmark.html">QAOA Benchmark</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pages/QAOA%20benchmark.html#single-thread-benchmark">Single Thread Benchmark</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#machine-info">Machine Info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#package-info">Package Info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#single-gate-benchmark">Single Gate Benchmark</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#parameterized-circuit-benchmark">Parameterized Circuit Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/QAOA%20benchmark.html">QAOA benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pages/QAOA%20benchmark.html#introduction">1. Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#qaoa">1.1 QAOA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#max-cut-problem">1.2 Max Cut Problem</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pages/QAOA%20benchmark.html#platform-info">2. Platform info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pages/QAOA%20benchmark.html#benchmarking-the-standard-qaoa">3. Benchmarking the standard QAOA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#setting">3.1 Setting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#results">3.2 Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pages/QAOA%20benchmark.html#benchmarking-recursive-qaoa">4. Benchmarking recursive QAOA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#id1">4.1 Setting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pages/QAOA%20benchmark.html#id2">4.2 Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pages/QAOA%20benchmark.html#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pages/QML%20benchmark.html">QML Benchmark</a><ul>
@@ -177,14 +189,20 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pages/QC%20benchmark.html">QC Benchmark</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pages/QC%20benchmark.html#single-thread-benchmark">Single Thread Benchmark</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#machine-info">Machine Info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#package-info">Package Info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#single-gate-benchmark">Single Gate Benchmark</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#parameterized-circuit-benchmark">Parameterized Circuit Benchmark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/QC%20benchmark.html">QC benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pages/QC%20benchmark.html#conventional-robust-quantum-control">Conventional robust quantum control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#model">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#benchmark-results">benchmark results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#code-example">code example</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pages/QC%20benchmark.html#geometric-quantum-control">Geometric quantum control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#id1">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#id2">benchmark results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pages/QC%20benchmark.html#id3">code example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pages/QC%20benchmark.html#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pages/VQE%20benchmark.html">VQE Benchmark</a><ul>
@@ -195,6 +213,15 @@
 <li class="toctree-l3"><a class="reference internal" href="pages/VQE%20benchmark.html#parameterized-circuit-benchmark">Parameterized Circuit Benchmark</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pages/Machine%20Learning%20in%20Phase%20Transition%20Benchmark.html">Machine Learning in Phase Transition Benchmark</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pages/Machine%20Learning%20in%20Phase%20Transition%20Benchmark.html#information">Information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pages/Machine%20Learning%20in%20Phase%20Transition%20Benchmark.html#machine-info-multithread-benchmark">Machine Info: Multithread Benchmark</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pages/Machine%20Learning%20in%20Phase%20Transition%20Benchmark.html#dataset">Dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pages/Machine%20Learning%20in%20Phase%20Transition%20Benchmark.html#list-of-machine-learning-methods">List of machine learning methods</a></li>
 </ul>
 </li>
 </ul>
@@ -217,7 +244,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pages/QAOA%20benchmark.html" class="btn btn-neutral float-right" title="QAOA Benchmark" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pages/QAOA%20benchmark.html" class="btn btn-neutral float-right" title="QAOA benchmark" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
