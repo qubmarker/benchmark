@@ -1,116 +1,479 @@
-QAOA Benchmark
-=================
+[TOC]
 
--  `QAOA Benchmark Results <#QAOA-benchmark-results>`__
--  `Single Thread Benchmark <#single-thread-benchmark>`__
+1. Introduction
+===============
 
-   -  `Machine Info <#machine-info>`__
-   -  `Package Info <#package-info>`__
-   -  `Single Gate Benchmark <#single-gate-benchmark>`__
-   -  `Parameterized Circuit
-      Benchmark <#parameterized-circuit-benchmark>`__
-   -  `Batched parameterized circuit of Yao and
-      CuYao <#batched-parameterized-circuit-of-yao-and-cuyao>`__
+1.1 QAOA
+--------
 
-Single Thread Benchmark
------------------------
+In 2014， Farhi et al. proposed the quantum approximate optimization
+algorithm (`QAOA <#Farhi14>`__) which is a variational quantum algorithm
+aiming at solving combinatorial optimization problems by a parameterized
+quantum circuit. Most of the combinatorial optimization problems can be
+encoded into some special Hamiltonians (which are diagonal under the Z
+basis) such that solving the original problems is equivalent to finding
+the ground states of their corresponding Hamitonians.
 
-This benchmark only include single thread benchmark, all the multithread
-features are disabled.
+More specifically, let :math:`H_Z` be the problem Hamitonian of
+:math:`n` qubit which is diagonal in the :math:`Z` basis and
+:math:`H_X=\sum_{j=1}^n X_j` be the mixer. Fix an integer :math:`p`, the
+:math:`p`-th step of QAOA is defined as follows. Set
+:math:`\boldsymbol{\beta}=(\beta_1,\beta_2,\cdots,\beta_p)`,
+:math:`\boldsymbol{\gamma}=(\gamma_1, \gamma_2,\cdots, \gamma_p)` and
+define the ansatz as
 
-Machine Info
-~~~~~~~~~~~~
+.. math::
 
-Julia & CPU Info
+
+   |\psi({\boldsymbol{\beta}},{\boldsymbol{\gamma}})\rangle=U(H_X,\beta_p)U(H_Z,\gamma_p)\cdots U(H_X,\beta_1)U(H_Z,\gamma_1)|{+}\rangle^{\otimes n}
+
+where :math:`U(H,\alpha) = e^{-i\alpha H}` and
+:math:`|{+}\rangle = \frac{1}{\sqrt{2}}(|{0}\rangle + |{1}\rangle)`.
+Define
+
+.. math::
+
+
+   F_p:=\max_{\boldsymbol{\beta},{\boldsymbol{\gamma}}}    F_p(\boldsymbol{\beta},{\boldsymbol{\gamma}}) =\max_{\boldsymbol{\beta},\boldsymbol{\gamma}} \langle{\psi(\boldsymbol{\beta},\boldsymbol{\gamma})}|H_Z|\psi(\boldsymbol{\beta},\boldsymbol{\gamma})\rangle.
+
+ Then it can be showed that the following equality holds:
+
+.. math:: \lim_{p\rightarrow+\infty} F_p=\max_{|\psi\rangle}\{ \langle \psi| H_Z|\psi\rangle\}.
+
+Given :math:`H_Z`, denote
+:math:`W:=\max_{|\psi\rangle}\{ \langle \psi| H_Z|\psi\rangle\}` as the
+maximum solution to the optimization problem, which is assumed to be
+positive. Then the approximate ratio of :math:`p`-level QAOA on this
+problem is defined as :math:`\frac{F_p}{W}`, which is always less than
+one.
+
+1.2 Max Cut Problem
+-------------------
+
+A canonical example of combinatorial optimization problem is Max Cut.
+The problem is defined as follows. Let :math:`G = (V, E)` be a simple
+undirected graph. A cut is a function :math:`c : V \rightarrow\{1, -1\}`
+that labels the nodes with symbols :math:`1` and :math:`-1`. An edge
+:math:`(i, j) \in E` is a cut edge if :math:`c(i) \neq  c(j).` Let
+:math:`N(c)` denote the number of the cutting edges. Then the classical
+Max Cut problem is to find a function :math:`c` with maximal cutting
+edges :math:`N(c)`. That is,
+
+.. math:: \max_{c} N(c)=\max_{c} \sum_{(i, j) \in E} [1-c(i)c(j)]/2.
+
+| More general, we may consider a graph :math:`G = (V, E)` with
+weighting edges :math:`\omega: E \rightarrow [-1,1].` Then the
+corresponding Max Cut problem is to find a cut :math:`c` maximize the
+following term
+| 
+
+.. math:: \max_{c} \sum_{(i, j) \in E} w(i,j) [1-c(i)c(j)]/2.
+
+2. Platform info
+================
+
+OS: CPU: BLAS: LIBM: GPU:
+
+Below is the information of the packages used.
+
++------------+-----------+
+| Package    | Version   |
++============+===========+
+| Python     | 2.7.12    |
++------------+-----------+
+| NumPy      | 1.18.3    |
++------------+-----------+
+| SciPy      | 1.4.1     |
++------------+-----------+
+| projectq   | 0.5.0     |
++------------+-----------+
+| ...        | ...       |
++------------+-----------+
+
+3. Benchmarking the standard QAOA
+=================================
+
+Here and below, we refer to standard QAOA as the one proposed in `Farhi
+et al.'s paper <#Harhi14>`__. In the standard QAOA, the mixer is chosen
+to be :math:`H_X = \sum_i X_i`.
+
+3.1 Setting
+-----------
+
+**Classical optimizer**:
+`SLSQP <https://docs.scipy.org/doc/scipy/reference/optimize.minimize-slsqp.html>`__
+
+**Random graphs generation**: `Erdos-Renyi
+graphs <https://networkx.org/documentation/stable/reference/generated/networkx.generators.random_graphs.gnp_random_graph.html>`__
+with prob = 0.4, seed\_set =
+{123,231,245,114,523,567,457,129,325,657,554,234,226,347,128,193,456,753,248,675}
+
+**Strategy for optimization:** Running the QAOA for :math:`p=1` with 50
+times and chose an optimal solution. The running time corresponds to
+this optimal one. The intial parameters in depth :math:`p+1` QAOA depend
+on those of the "optimal ones" in the depth :math:`p` QAOA.
+Specifically, :math:`\beta^{(p+1)}_i={\beta *}^{(p)}_i` for
+:math:`i=1,\cdots,p` and
+:math:`\beta^{(p+1)}_{p+1}={\beta  *}^{(p)}_{p}`.
+
+3.2 Results
+-----------
+
+.. raw:: html
+
+   <center>
+
+|times-p\_7\_12.jpg|
+
+.. raw:: html
+
+   <div>
+
+ Figure 3.1: time vs. :math:`p` for :math:`n=7—12`
+
+.. raw:: html
+
+   </div>
 
 ::
 
-    julia> versioninfo()
-    Julia Version 1.3.0
-    Commit 46ce4d7933 (2019-11-26 06:09 UTC)
-    Platform Info:
-      OS: Linux (x86_64-pc-linux-gnu)
-      CPU: Intel(R) Xeon(R) Gold 6230 CPU @ 2.10GHz
-      WORD_SIZE: 64
-      LIBM: libopenlibm
-      LLVM: libLLVM-6.0.1 (ORCJIT, skylake)
+    <br>
 
-BLAS: intel MKL
+.. raw:: html
 
-Python version: 3.7.3
+   </center>
 
-GPU: Tesla V100
 
-Package Info
-~~~~~~~~~~~~
+   <center>
 
-+------------------------+-----------+---------------------+
-| Package                | Version   | Type of Simulator   |
-+========================+===========+=====================+
-| Yao                    | v0.6.1    | full amplitudes     |
-+------------------------+-----------+---------------------+
-| CuYao                  | v0.2.0    | full amplitudes     |
-+------------------------+-----------+---------------------+
-| qiskit                 | 0.16.0    | full amplitudes     |
-+------------------------+-----------+---------------------+
-| qiskit-aer             | 0.4.0     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| qiskit-terra           | 0.12.0    | full amplitudes     |
-+------------------------+-----------+---------------------+
-| qulacs                 | 0.1.9     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| projectq               | 0.4.2     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| Cirq                   | 0.7.0     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| PennyLane              | 0.8.1     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| QuEST (pyquest-cffi)   | 0.1.1     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| JKQ DDSIM¹             | v1.0.1a   | decision diagrams   |
-+------------------------+-----------+---------------------+
+|times-n\_7\_12.jpg|
 
-¹ This benchmark uses the mean estimator for the timings. To get
-accurate timings when recreating the results, please ensure no other
-other applications run concurrently.
+.. raw:: html
 
-Single Gate Benchmark
-~~~~~~~~~~~~~~~~~~~~~
+   <div>
 
-Benchmarks of a) Pauli-X gate; b) Hadamard gate; c) CNOT gate; d)
-Toffolli gate.
+Figure 3.2: time vs. :math:`n` for :math:`p=1,2,3,4,5`\ 
 
-.. figure:: images/gates.png
-   :alt: gates
+.. raw:: html
 
-   gates
-.. figure:: images/gates_relative.png
-   :alt: gates-relative
+   </div>
 
-   gates-relative
-Parameterized Circuit Benchmark
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
 
-b) Benchmarks of parameterized circuit. c) Benchmarks of parametrized
-   circuit with batched registers (batch size = 1000).
+    <br>
 
-NOTE:
+.. raw:: html
 
--  qiskit state vector simulator does not support rotation x/z gate,
-   thus there is no benchmark on the following circuits.
--  PennyLane benchmark contains some overhead from error handling since
-   we do not include measurement in this benchmark
-   (https://github.com/Roger-luo/quantum-benchmarks/pull/7)
--  the performance of CUDA may vary on different machine
-   (https://github.com/Roger-luo/quantum-benchmarks/issues/6), although
-   the difference is not very huge
+   </center>
 
-.. figure:: images/pcircuit.png
-   :alt: pcircuit
 
-   pcircuit
-.. figure:: images/pcircuit_relative.png
-   :alt: pcircuit-relative
 
-   pcircuit-relative
+   <center>
 
+|ratio-p\_7\_12.jpg|
+
+.. raw:: html
+
+   <div>
+
+Figure 3.3: approximation ratio vs. :math:`p` for :math:`n=7—12`\ 
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+   <center>
+
+|ratio-n\_7\_12.jpg|
+
+.. raw:: html
+
+   <div>
+
+Figure 3.4: approximation ratio vs. :math:`n` for
+:math:`p = 1,2,3,4,5`\ 
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+
+   <center>
+
+|iterate-p\_7\_12.jpg|
+
+.. raw:: html
+
+   <div>
+
+ Figure 3.5: number of iterations vs. :math:`p` for :math:`n=7—12`\ 
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+
+.. raw:: html
+
+   <center>
+
+|iterate-n\_7\_12.jpg|
+
+.. raw:: html
+
+   <div>
+
+Figure 3.6: number of iterations vs. :math:`n` for :math:`p=1,2,3,4,5`\ 
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+
+
+
+
+
+4. Benchmarking recursive QAOA
+==============================
+
+Here, we compare the performance of `RQAOA <#Bravyi19>`__ with the
+standard QAOA. Roughly speaking, RQAOA is a method to recursively run
+QAOA and reduce the problem size by 1 at each recursion. It is argued
+that RQAOA outperforms the standard QAOA.
+
+4.1 Setting
+-----------
+
+**Classical optimizer**:
+`L-BFGS-B <https://docs.scipy.org/doc/scipy/reference/optimize.minimize-lbfgsb.html>`__
+
+**Random graphs generation**: We use two methods to generate random
+graphs - `random regular
+graphs <https://networkx.org/documentation/stable/reference/generated/networkx.generators.random_graphs.random_regular_graph.html>`__
+
+-  `Erdos-Renyi
+   graphs <https://networkx.org/documentation/stable/reference/generated/networkx.generators.random_graphs.gnp_random_graph.html>`__
+   with prob = 0.65, seed\_set
+   ={5,13,48,53,58,70,89,91,100,104,123,140,150,169,182,200,210,220,227,230}
+
+4.2 Results
+-----------
+
+.. raw:: html
+
+   <center>
+
+|RQAOA\_vs\_QAOA\_ratio.png|
+
+.. raw:: html
+
+   <div>
+
+Figure 4.1: approximate ratio of RQAOA and QAOA of depth :math:`p=1,2`
+of 20 instances on random regular graphs :math:`(n=15,d=6)`.
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+
+
+.. raw:: html
+
+   <center>
+
+|RQAOA\_vs\_QAOA\_time.png|
+
+.. raw:: html
+
+   <div>
+
+Figure 4.2: time consumed for RQAOA and QAOA of depth :math:`p=1,2` of
+20 instances on random regular graphs :math:`(n=15,d=6)`.
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+
+
+
+.. raw:: html
+
+   <center>
+
+|RQAOA\_vs\_QAOA\_ratio\_10\_qubits.png|
+
+.. raw:: html
+
+   <div>
+
+Figure 4.3: approximate ratio of RQAOA and QAOA of depth :math:`p=1,2`
+of 20 instances on Erdos-Renyi graphs with :math:`n=10` nodes.
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+
+
+   <center>
+
+|RQAOA\_vs\_QAOA\_iterates\_10\_qubits.png|
+
+.. raw:: html
+
+   <div>
+
+Figure 4.4: Iterations of RQAOA and QAOA of depth :math:`p=1,2` of 20
+instances on Erdos-Renyi graphs with :math:`n=10` nodes.
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+
+
+
+
+
+   <center>
+
+|RQAOA\_vs\_QAOA\_ratio\_6-11\_qubits.png|
+
+.. raw:: html
+
+   <div>
+
+Figure 4.5: approximate ratio of RQAOA and QAOA of depth :math:`p=1,2`
+of 20 instances on Erdos-Renyi graphs with :math:`n=6-11` nodes.
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+
+.. raw:: html
+
+   <center>
+
+|RQAOA\_vs\_QAOA\_iterate\_6-11\_qubits.png|
+
+.. raw:: html
+
+   <div>
+
+Figure 4.6: Iterations of RQAOA and QAOA of depth :math:`p=1,2` of 20
+instances on Erdos-Renyi graphs with :math:`n=6-11` nodes.
+
+.. raw:: html
+
+   </div>
+
+::
+
+    <br>
+
+.. raw:: html
+
+   </center>
+
+
+
+
+
+
+## References
+
+ [Farhi14] Edward Farhi, Jeffrey Goldstone, Sam Gutmann. A Quantum
+Approximate Optimization Algorithm, arXiv:1411.4028.
+
+ [Bravyi19] Sergey Bravyi, Alexander Kliesch, Robert Koenig, and Eugene
+Tang, Obstacles to State Preparation and Variational Optimization from
+Symmetry Protection, arXiv:1910.08980v1.
+
+.. |times-p\_7\_12.jpg| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/times-p_7_12.jpg?token=AQEBVJVONSTPAP22VKPPGT27YWVC2
+.. |times-n\_7\_12.jpg| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/times-n_7_12.jpg?token=AQEBVJQGZGJYFCTNZ7VJY6K7YWVBQ
+.. |ratio-p\_7\_12.jpg| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/ratio-p_7_12.jpg?token=AQEBVJQ5GZ26WV4LIMMDIJ27YWVAE
+.. |ratio-n\_7\_12.jpg| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/ratio-n_7_12.jpg?token=AQEBVJUY33QANGB2JCTIQJS7YWU6G
+.. |iterate-p\_7\_12.jpg| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/iterate-p_7_12.jpg?token=AQEBVJS6CMJ6OC2PCLBWFLK7YWTPK
+.. |iterate-n\_7\_12.jpg| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/iterate-n_7_12.jpg?token=AQEBVJRW4FDAV6IYZQBLEGS7YWU42
+.. |RQAOA\_vs\_QAOA\_ratio.png| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/RQAOA_vs_QAOA_Ratio_Instances_15_6_gpn.png?token=AQEBVJUU5SMVWYGUQVSMMVS7XZMGQ
+.. |RQAOA\_vs\_QAOA\_time.png| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/RQAOA_vs_QAOA_Time_Instances_15_6_rrg.png?token=AQEBVJWCXU62QTCXZPS5HOK7XZML4
+.. |RQAOA\_vs\_QAOA\_ratio\_10\_qubits.png| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/RQAOA_vs_QAOA_Ratio_Instances_10_gpn.png?token=AQEBVJWSTKRJ26MLYFMTGLK7XZMPO
+.. |RQAOA\_vs\_QAOA\_iterates\_10\_qubits.png| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/RQAOA_vs_QAOA_Iterates_Instances_10_gpn.png?token=AQEBVJS2EZI2HWPC2ZZ64Z27XZMTS
+.. |RQAOA\_vs\_QAOA\_ratio\_6-11\_qubits.png| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/RQAOA_vs_QAOA_Ratio_qubits_6-11_rrg.png?token=AQEBVJQ47YKMYE2LTKZVDG27XZMXW
+.. |RQAOA\_vs\_QAOA\_iterate\_6-11\_qubits.png| image:: https://raw.githubusercontent.com/AlaricCheng/QAOA-benchmark/master/Results/images/RQAOA_vs_QAOA_Iterates_qubits_6-11_gpn.png?token=AQEBVJXWTM4OERV3SPOYUOS7XZNCQ

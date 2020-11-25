@@ -1,116 +1,241 @@
-QC Benchmark
-=================
+Conventional robust quantum control
+===================================
 
--  `QC Benchmark Results <#QC-benchmark-results>`__
--  `Single Thread Benchmark <#single-thread-benchmark>`__
+model
+-----
 
-   -  `Machine Info <#machine-info>`__
-   -  `Package Info <#package-info>`__
-   -  `Single Gate Benchmark <#single-gate-benchmark>`__
-   -  `Parameterized Circuit
-      Benchmark <#parameterized-circuit-benchmark>`__
-   -  `Batched parameterized circuit of Yao and
-      CuYao <#batched-parameterized-circuit-of-yao-and-cuyao>`__
+We consider the time dependent Hamiltonian
 
-Single Thread Benchmark
------------------------
+.. math:: H_j=\frac{1}{2}\delta\sigma_z+\frac{1}{2}(1+\alpha)(\cos\phi_j\sigma_x+\cos\phi_j\sigma_y)
 
-This benchmark only include single thread benchmark, all the multithread
-features are disabled.
+where :math:`\phi_j` are control parameters, :math:`\alpha` represents
+Rabi errors and :math:`\delta` represents detuning errors in :math:`z`
+direction. The corresponding unitary is given by
 
-Machine Info
-~~~~~~~~~~~~
+.. math:: U=\prod_{j=0}^{N-1}e^{-iH_jdt}
 
-Julia & CPU Info
+ ##benchmark results## We compare different robust quantum control
+schemes with different values of ## and :math:`\delta`. Figure.1 shows
+the infidelity between ideal quantum gate (:math:`\alpha=\delta=0`) and
+noisy gate under different noise levels. We have chosen NOT gate as
+target gates.
+
+|Alt Image Text| ##code example## In below is the matlab code for BB1
+sequence. More codes are to be updated.
 
 ::
 
-    julia> versioninfo()
-    Julia Version 1.3.0
-    Commit 46ce4d7933 (2019-11-26 06:09 UTC)
-    Platform Info:
-      OS: Linux (x86_64-pc-linux-gnu)
-      CPU: Intel(R) Xeon(R) Gold 6230 CPU @ 2.10GHz
-      WORD_SIZE: 64
-      LIBM: libopenlibm
-      LLVM: libLLVM-6.0.1 (ORCJIT, skylake)
+    clc
+    clear all
+    close all
 
-BLAS: intel MKL
+    phi=acos(-1/4);
+    dt=0.01*pi;
+    sx=[0,1;1,0];
+    sy=[0,-1j;1j,0];
+    sz=[1,0;0,-1];
+    U_ideal=[0,1;1,0];
+    U=eye(2);
+    H={sx/2,(cos(phi)*sx+sin(phi)*sy)/2,(cos(3*phi)*sx+sin(3*phi)*sy)/2};
+    i=1;m=1;
+    for alpha=-0.1:0.005:0.1
+        U1=expm(-1j*(1+alpha)*H{2}*pi)*expm(-1j*(1+alpha)*H{3}*2*pi)*expm(-1j*(1+alpha)*H{2}*pi)*expm(-1j*(1+alpha)*H{1}*pi);
+        F=abs(trace(U1*U_ideal'))/2;
+        z(i)=F;
+        i=i+1;
+    end
+    alpha=-0.1:0.005:0.1;
+    figure()
+    plot(alpha,z)
+    xlabel('\alpha')
+    ylabel('Fidelity')
 
-Python version: 3.7.3
+    for delta=-0.1:0.005:0.1
+        U=expm(-1j*(H{2}+delta*sz/2)*pi)*expm(-1j*(H{3}+delta*sz/2)*2*pi)*expm(-1j*(H{2}+delta*sz/2)*pi)*expm(-1j*(H{1}+delta*sz/2)*pi);
+        F=abs(trace(U*U_ideal'))/2;
+        d(m)=F;
+        m=m+1;
+    end
+    delta=-0.1:0.005:0.1;
+    figure()
+    plot(delta,d)
+    xlabel('\delta')
+    ylabel('Fidelity')
 
-GPU: Tesla V100
+    n=1;s=1;
+    for alpha=-0.1:0.01:0.1
+        for delta=-0.1:0.01:0.1
+            U=expm(-1j*((1+alpha)*H{2}+delta*sz/2)*pi)*expm(-1j*((1+alpha)*H{3}+delta*sz/2)*2*pi)*expm(-1j*((1+alpha)*H{2}+delta*sz/2)*pi)*expm(-1j*((1+alpha)*H{1}+delta*sz/2)*pi);
+            F=abs(trace(U*U_ideal'))/2;
+            f(n,s)=F;
+            s=s+1;
+        end
+        n=n+1;s=1;
+    end
+    alpha=-0.1:0.01:0.1;
+    delta=-0.1:0.01:0.1;
+    figure()
+    [alpha,delta]=meshgrid(alpha,delta);
+    [C,h]=contourf(delta,alpha,f,[0.9965,0.993,0.9895,0.986])
+    clabel(C,h)
+    xlabel('\alpha')
+    ylabel('\delta')
 
-Package Info
-~~~~~~~~~~~~
+Geometric quantum control
+=========================
 
-+------------------------+-----------+---------------------+
-| Package                | Version   | Type of Simulator   |
-+========================+===========+=====================+
-| Yao                    | v0.6.1    | full amplitudes     |
-+------------------------+-----------+---------------------+
-| CuYao                  | v0.2.0    | full amplitudes     |
-+------------------------+-----------+---------------------+
-| qiskit                 | 0.16.0    | full amplitudes     |
-+------------------------+-----------+---------------------+
-| qiskit-aer             | 0.4.0     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| qiskit-terra           | 0.12.0    | full amplitudes     |
-+------------------------+-----------+---------------------+
-| qulacs                 | 0.1.9     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| projectq               | 0.4.2     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| Cirq                   | 0.7.0     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| PennyLane              | 0.8.1     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| QuEST (pyquest-cffi)   | 0.1.1     | full amplitudes     |
-+------------------------+-----------+---------------------+
-| JKQ DDSIM¹             | v1.0.1a   | decision diagrams   |
-+------------------------+-----------+---------------------+
+model
+-----
 
-¹ This benchmark uses the mean estimator for the timings. To get
-accurate timings when recreating the results, please ensure no other
-other applications run concurrently.
+We take the decoherence into consideration and describe quantum states
+with density matrix. The evolution is described by master equation
 
-Single Gate Benchmark
-~~~~~~~~~~~~~~~~~~~~~
+.. math:: \rho_{t+1}=\rho_t+dt\left[-i[H_t(1+\beta),\rho_t]+\frac{1}{T_1}D_1[\rho_t]+\frac{1}{T_2}D_2[\rho_t]   \right]
 
-Benchmarks of a) Pauli-X gate; b) Hadamard gate; c) CNOT gate; d)
-Toffolli gate.
+where
 
-.. figure:: images/gates.png
-   :alt: gates
+.. math:: D_1[\rho]=\sum_{i=0}^{N-1} 2|i\rangle\langle i+1|\rho|i+1\rangle\langle i|-|i+1\rangle\langle i+1|\rho-\rho|i+1\rangle\langle i+1|
 
-   gates
-.. figure:: images/gates_relative.png
-   :alt: gates-relative
+ and
 
-   gates-relative
-Parameterized Circuit Benchmark
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. math:: D_2[\rho]=\sum_{i=0}^{N-1} 2|i\rangle\langle i|\rho|i\rangle\langle i|-|i\rangle\langle i|\rho-\rho|i\rangle\langle i|
 
-b) Benchmarks of parameterized circuit. c) Benchmarks of parametrized
-   circuit with batched registers (batch size = 1000).
+ Here, :math:`\beta` represents the control error, :math:`T_1` and
+:math:`T_2` represent decoherent and dephasing time.
 
-NOTE:
+benchmark results
+-----------------
 
--  qiskit state vector simulator does not support rotation x/z gate,
-   thus there is no benchmark on the following circuits.
--  PennyLane benchmark contains some overhead from error handling since
-   we do not include measurement in this benchmark
-   (https://github.com/Roger-luo/quantum-benchmarks/pull/7)
--  the performance of CUDA may vary on different machine
-   (https://github.com/Roger-luo/quantum-benchmarks/issues/6), although
-   the difference is not very huge
+The summary of the comparison for different geometric quantum control
+schemes are shown in below
 
-.. figure:: images/pcircuit.png
-   :alt: pcircuit
+.. figure:: images/p2.png
+   :alt: Alt Image Text
 
-   pcircuit
-.. figure:: images/pcircuit_relative.png
-   :alt: pcircuit-relative
+   Alt Image Text
+The following figure shows infidelity of different geometric gates
+averaged over different initial states. Target unitary is NOT gate and
+:math:`T_1=T_2=34\mu s`.
 
-   pcircuit-relative
+.. figure:: images/p1.png
+   :alt: Alt Image Text
 
+   Alt Image Text
+code example
+------------
+
+In below is the matlab code for master equation
+
+::
+
+    function [out]=master(Hami,dm,deco1,deco2,k1,k2)
+    down1=deco1;down2=deco2;
+    up1=ctranspose(down1);up2=ctranspose(down2);
+    temp0=-1i*(Hami*dm-dm*Hami);
+    temp1=2*down1*dm*up1-up1*down1*dm-dm*up1*down1;
+    temp2=2*down2*dm*up2-up2*down2*dm-dm*up2*down2;
+    out=temp0+1/2*k1*temp1+1/2*k2*temp2;
+    end
+
+The matlab code for dynamical gates (the baseline)
+
+::
+
+    clc;clear all;close all;
+    tic
+    identy=eye(2);
+    OneState=[0;1];     %1
+    ZeroState=[1;0];    %0
+    atom1E11=OneState*OneState';
+    %materdecay
+    Gamma0=ZeroState*OneState';
+    Gamma1=OneState*OneState';
+    r1=2*pi*4/10e2; 
+    r2=2*pi*4/10e2;
+    nn=21;
+    f2ka=zeros(nn,1);
+    for in=1:nn
+        Ff=(in-11)/100;
+    s=1;
+    for PSI=0*pi:1/20*2*pi:2*pi
+
+    one=OneState;     %1
+    zero=ZeroState;   %0
+
+    thetaA=PSI;
+    intialstate=sin(thetaA)*zero+cos(thetaA)*one;
+    finalatomstate1=cos(thetaA)*zero+sin(thetaA)*one;
+    initialdm=intialstate*ctranspose(intialstate);
+    dm1=initialdm;
+    fidm=finalatomstate1*ctranspose(finalatomstate1);
+    fidm0=zero*ctranspose(zero);
+    fidm1=one*ctranspose(one);
+    Omega0=2*pi*50;
+    T=pi/Omega0/2;
+    tau=2*T;
+    gamma=pi/2;
+
+    N=1000;time1=tau; timestep1=time1/N;
+    %%%%%%%%%%%%%%%%%
+    NB=0;
+    for n=1:round(time1/timestep1)
+        t=(n-1)*timestep1+10^-6;
+        phi=0;d=1+Ff;
+        Omega=Omega0;
+
+        H=1*[0 d*Omega;d*Omega,0]/2;
+        Hamiltonian1=H;
+        k1=master(Hamiltonian1,dm1,Gamma0,Gamma1,r1,r2);
+        k2=master(Hamiltonian1,dm1+0.5*timestep1*k1,Gamma0,Gamma1,r1,r2);
+        k3=master(Hamiltonian1,dm1+0.5*timestep1*k2,Gamma0,Gamma1,r1,r2);
+        k4=master(Hamiltonian1,dm1+timestep1*k3,Gamma0,Gamma1,r1,r2);
+        dm1=dm1+(timestep1/6)*(k1+2*k2+2*k3+k4);
+        dm1=0.5*(dm1+ctranspose(dm1));
+        dm1=dm1/(trace(dm1));
+        f(s,n)=trace(dm1*fidm); 
+    end
+    s=s+1;
+    end
+    pf=sum(f/(21),1); % maxf=max(f);
+    f2ka(in,1)=pf(n);
+    end
+    ixx=-0.1:0.01:0.1;
+    figure(1)
+    plot(ixx,f2ka,'R','LineWidth',2.5)
+    xlabel('Rabi error \epsilon')
+    ylabel('Gate Fidelity')
+    figure(2)
+    semilogy(ixx,1-f2ka,'R','LineWidth',2.5)
+    xlabel('Rabi error \epsilon')
+    ylabel('Gate infidelity')
+
+More codes are to be updated.
+
+References
+==========
+
+[1] Wimperis, S. (1994). Broadband, narrowband, and passband composite
+pulses for use in advanced NMR experiments. Journal of Magnetic
+Resonance, Series A, 109(2), 221-231.
+
+[2] Ryan, C. A., Hodges, J. S., & Cory, D. G. (2010). Robust decoupling
+techniques to extend quantum coherence in diamond. Physical Review
+Letters, 105(20), 200402.
+
+[3] Cummins, H. K., Llewellyn, G., & Jones, J. A. (2003). Tackling
+systematic errors in quantum logic gates with composite rotations.
+Physical Review A, 67(4), 042308.
+
+[4] Zhu, S. L., & Wang, Z. D. (2002). Implementation of universal
+quantum gates based on nonadiabatic geometric phases. Physical review
+letters, 89(9), 097902.
+
+[5] Sjöqvist, E., Tong, D. M., Andersson, L. M., Hessmo, B., Johansson,
+M., & Singh, K. (2012). Non-adiabatic holonomic quantum computation. New
+Journal of Physics, 14(10), 103035.
+
+[6] Liu, B. J., Song, X. K., Xue, Z. Y., Wang, X., & Yung, M. H. (2019).
+Plug-and-play approach to nonadiabatic geometric quantum gates. Physical
+Review Letters, 123(10), 100501.
+
+.. |Alt Image Text| image:: images/p3.png
