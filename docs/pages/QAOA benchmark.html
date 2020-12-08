@@ -37,7 +37,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="QML Benchmark" href="QML%20benchmark.html" />
+    <link rel="next" title="QC benchmark" href="QC%20benchmark.html" />
     <link rel="prev" title="Welcome to benchmark’s documentation!" href="../index.html" /> 
 </head>
 
@@ -86,18 +86,18 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">QAOA benchmark</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#introduction">1. Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#qaoa">1.1 QAOA</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#max-cut-problem">1.2 Max Cut Problem</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#platform-info">2. Platform info</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#benchmarking-the-standard-qaoa">3. Benchmarking the standard QAOA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#platform-info">Platform info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#benchmarking-the-standard-qaoa">Benchmarking the standard QAOA</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setting">3.1 Setting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#results">3.2 Results</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#benchmarking-recursive-qaoa">4. Benchmarking recursive QAOA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#benchmarking-recursive-qaoa">Benchmarking recursive QAOA</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id1">4.1 Setting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id2">4.2 Results</a></li>
 </ul>
@@ -105,7 +105,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="QML%20benchmark.html">QML Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="QC%20benchmark.html">QC benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="VQE%20benchmark.html">VQE Benchmark</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Machine%20Learning%20in%20Phase%20Transition%20Benchmark.html">Machine Learning in Phase Transition Benchmark</a></li>
@@ -177,7 +176,7 @@
   <div class="section" id="qaoa-benchmark">
 <h1>QAOA benchmark<a class="headerlink" href="#qaoa-benchmark" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
-<h2>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="qaoa">
 <h3>1.1 QAOA<a class="headerlink" href="#qaoa" title="Permalink to this headline">¶</a></h3>
 <p>In 2014， Farhi et al. proposed the quantum approximate optimization
@@ -234,7 +233,7 @@ following term
 </div>
 </div>
 <div class="section" id="platform-info">
-<h2>2. Platform info<a class="headerlink" href="#platform-info" title="Permalink to this headline">¶</a></h2>
+<h2>Platform info<a class="headerlink" href="#platform-info" title="Permalink to this headline">¶</a></h2>
 <p>OS: CPU: BLAS: LIBM: GPU:</p>
 <p>Below is the information of the packages used.</p>
 <table class="docutils align-default">
@@ -267,7 +266,7 @@ following term
 </table>
 </div>
 <div class="section" id="benchmarking-the-standard-qaoa">
-<h2>3. Benchmarking the standard QAOA<a class="headerlink" href="#benchmarking-the-standard-qaoa" title="Permalink to this headline">¶</a></h2>
+<h2>Benchmarking the standard QAOA<a class="headerlink" href="#benchmarking-the-standard-qaoa" title="Permalink to this headline">¶</a></h2>
 <p>Here and below, we refer to standard QAOA as the one proposed in <a class="reference external" href="#Harhi14">Farhi
 et al.’s paper</a>. In the standard QAOA, the mixer is chosen
 to be <span class="math notranslate nohighlight">\(H_X = \sum_i X_i\)</span>.</p>
@@ -289,67 +288,35 @@ Specifically, <span class="math notranslate nohighlight">\(\beta^{(p+1)}_i={\bet
 </div>
 <div class="section" id="results">
 <h3>3.2 Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h3>
-<center><div class="figure align-default">
+<div class="figure align-default" id="id3">
 <img alt="../_images/q1.jpg" src="../_images/q1.jpg" />
+<p class="caption"><span class="caption-text">Figure 3.1: time vs. <span class="math notranslate nohighlight">\(p\)</span> for <span class="math notranslate nohighlight">\(n=7—12\)</span></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-  <div>
-
-Figure 3.1: time vs. :math:`p` for :math:`n=7—12`</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center>
-
-
-<center><div class="figure align-default">
+<div class="figure align-default">
 <img alt="../_images/q2.jpg" src="../_images/q2.jpg" />
 </div>
-<div><p>Figure 3.2: time vs. <span class="math notranslate nohighlight">\(n\)</span> for <span class="math notranslate nohighlight">\(p=1,2,3,4,5\)</span></p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center>
-
-
-
-<center><div class="figure align-default">
+<p>Figure 3.2: time vs. <span class="math notranslate nohighlight">\(n\)</span> for <span class="math notranslate nohighlight">\(p=1,2,3,4,5\)</span></p>
+<div class="figure align-default">
 <img alt="../_images/q3.jpg" src="../_images/q3.jpg" />
 </div>
-<div><p>Figure 3.3: approximation ratio vs. <span class="math notranslate nohighlight">\(p\)</span> for <span class="math notranslate nohighlight">\(n=7—12\)</span></p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center>
-
-<center><div class="figure align-default">
+<p>Figure 3.3: approximation ratio vs. <span class="math notranslate nohighlight">\(p\)</span> for <span class="math notranslate nohighlight">\(n=7—12\)</span></p>
+<div class="figure align-default">
 <img alt="../_images/q4.jpg" src="../_images/q4.jpg" />
 </div>
-<div><p>Figure 3.4: approximation ratio vs. <span class="math notranslate nohighlight">\(n\)</span> for
+<p>Figure 3.4: approximation ratio vs. <span class="math notranslate nohighlight">\(n\)</span> for
 <span class="math notranslate nohighlight">\(p = 1,2,3,4,5\)</span></p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center>
-
-
-<center><div class="figure align-default">
+<div class="figure align-default" id="id4">
 <img alt="../_images/q5.jpg" src="../_images/q5.jpg" />
+<p class="caption"><span class="caption-text">Figure 3.5: number of iterations vs. <span class="math notranslate nohighlight">\(p\)</span> for <span class="math notranslate nohighlight">\(n=7—12\)</span></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-  <div>
-
-Figure 3.5: number of iterations vs. :math:`p` for :math:`n=7—12`\</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center><center><div class="figure align-default">
+<div class="figure align-default">
 <img alt="../_images/q6.jpg" src="../_images/q6.jpg" />
 </div>
-<div><p>Figure 3.6: number of iterations vs. <span class="math notranslate nohighlight">\(n\)</span> for <span class="math notranslate nohighlight">\(p=1,2,3,4,5\)</span></p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
+<p>Figure 3.6: number of iterations vs. <span class="math notranslate nohighlight">\(n\)</span> for <span class="math notranslate nohighlight">\(p=1,2,3,4,5\)</span></p>
 </div>
-</center></div>
 </div>
 <div class="section" id="benchmarking-recursive-qaoa">
-<h2>4. Benchmarking recursive QAOA<a class="headerlink" href="#benchmarking-recursive-qaoa" title="Permalink to this headline">¶</a></h2>
+<h2>Benchmarking recursive QAOA<a class="headerlink" href="#benchmarking-recursive-qaoa" title="Permalink to this headline">¶</a></h2>
 <p>Here, we compare the performance of <a class="reference external" href="#Bravyi19">RQAOA</a> with the
 standard QAOA. Roughly speaking, RQAOA is a method to recursively run
 QAOA and reduce the problem size by 1 at each recursion. It is argued
@@ -370,66 +337,37 @@ with prob = 0.65, seed_set
 </div>
 <div class="section" id="id2">
 <h3>4.2 Results<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<center><div class="figure align-default">
+<div class="figure align-default">
 <img alt="../_images/q7.png" src="../_images/q7.png" />
 </div>
-<div><p>Figure 4.1: approximate ratio of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span>
+<p>Figure 4.1: approximate ratio of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span>
 of 20 instances on random regular graphs <span class="math notranslate nohighlight">\((n=15,d=6)\)</span>.</p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center><center><div class="figure align-default">
+<div class="figure align-default">
 <img alt="../_images/q8.png" src="../_images/q8.png" />
 </div>
-<div><p>Figure 4.2: time consumed for RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span> of
+<p>Figure 4.2: time consumed for RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span> of
 20 instances on random regular graphs <span class="math notranslate nohighlight">\((n=15,d=6)\)</span>.</p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center><center><div class="figure align-default">
+<div class="figure align-default">
 <img alt="../_images/q9.png" src="../_images/q9.png" />
 </div>
-<div><p>Figure 4.3: approximate ratio of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span>
+<p>Figure 4.3: approximate ratio of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span>
 of 20 instances on Erdos-Renyi graphs with <span class="math notranslate nohighlight">\(n=10\)</span> nodes.</p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center>
-
-
-
-<center><div class="figure align-default">
+<div class="figure align-default">
 <img alt="../_images/q10.png" src="../_images/q10.png" />
 </div>
-<div><p>Figure 4.4: Iterations of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span> of 20
+<p>Figure 4.4: Iterations of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span> of 20
 instances on Erdos-Renyi graphs with <span class="math notranslate nohighlight">\(n=10\)</span> nodes.</p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center>
-
-
-
-
-
-
-<center><div class="figure align-default">
+<div class="figure align-default">
 <img alt="../_images/q11.png" src="../_images/q11.png" />
 </div>
-<div><p>Figure 4.5: approximate ratio of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span>
+<p>Figure 4.5: approximate ratio of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span>
 of 20 instances on Erdos-Renyi graphs with <span class="math notranslate nohighlight">\(n=6-11\)</span> nodes.</p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</center><center><div class="figure align-default">
+<div class="figure align-default">
 <img alt="../_images/q12.png" src="../_images/q12.png" />
 </div>
-<div><p>Figure 4.6: Iterations of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span> of 20
+<p>Figure 4.6: Iterations of RQAOA and QAOA of depth <span class="math notranslate nohighlight">\(p=1,2\)</span> of 20
 instances on Erdos-Renyi graphs with <span class="math notranslate nohighlight">\(n=6-11\)</span> nodes.</p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-</pre></div>
 </div>
-</center></div>
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
@@ -453,7 +391,7 @@ Symmetry Protection, arXiv:1910.08980v1.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="QML%20benchmark.html" class="btn btn-neutral float-right" title="QML Benchmark" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="QC%20benchmark.html" class="btn btn-neutral float-right" title="QC benchmark" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to benchmark’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
