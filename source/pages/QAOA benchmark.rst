@@ -1,8 +1,8 @@
 QAOA benchmark
 ==============
 
-1. Introduction
----------------
+Introduction
+------------
 
 1.1 QAOA
 ~~~~~~~~
@@ -70,8 +70,8 @@ following term
 
 .. math:: \max_{c} \sum_{(i, j) \in E} w(i,j) [1-c(i)c(j)]/2.
 
-2. Platform info
-----------------
+Platform info
+-------------
 
 OS: CPU: BLAS: LIBM: GPU:
 
@@ -91,8 +91,8 @@ Below is the information of the packages used.
 | ...        | ...       |
 +------------+-----------+
 
-3. Benchmarking the standard QAOA
----------------------------------
+Benchmarking the standard QAOA
+------------------------------
 
 Here and below, we refer to standard QAOA as the one proposed in `Farhi
 et al.'s paper <#Harhi14>`__. In the standard QAOA, the mixer is chosen
@@ -120,155 +120,40 @@ Specifically, :math:`\beta^{(p+1)}_i={\beta *}^{(p)}_i` for
 3.2 Results
 ~~~~~~~~~~~
 
-.. raw:: html
-
-   <center>
 
 .. figure:: images/q1.jpg
 
-.. raw:: html
-
-   <div>
-
  Figure 3.1: time vs. :math:`p` for :math:`n=7—12`
-
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-
-   <center>
 
 .. figure:: images/q2.jpg
 
-.. raw:: html
-
-   <div>
-
 Figure 3.2: time vs. :math:`n` for :math:`p=1,2,3,4,5`\ 
-
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-
-
-   <center>
 
 .. figure:: images/q3.jpg
 
-.. raw:: html
-
-   <div>
-
 Figure 3.3: approximation ratio vs. :math:`p` for :math:`n=7—12`\ 
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-   <center>
-
 .. figure:: images/q4.jpg
-
-.. raw:: html
-
-   <div>
 
 Figure 3.4: approximation ratio vs. :math:`n` for
 :math:`p = 1,2,3,4,5`\ 
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-
-   <center>
-
 .. figure:: images/q5.jpg
-
-.. raw:: html
-
-   <div>
 
  Figure 3.5: number of iterations vs. :math:`p` for :math:`n=7—12`\ 
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-
-.. raw:: html
-
-   <center>
-
 .. figure:: images/q6.jpg
-
-.. raw:: html
-
-   <div>
 
 Figure 3.6: number of iterations vs. :math:`n` for :math:`p=1,2,3,4,5`\ 
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
 
 
 
 
 
 
-4. Benchmarking recursive QAOA
-------------------------------
+Benchmarking recursive QAOA
+---------------------------
 
 Here, we compare the performance of `RQAOA <#Bravyi19>`__ with the
 standard QAOA. Roughly speaking, RQAOA is a method to recursively run
@@ -293,164 +178,36 @@ graphs <https://networkx.org/documentation/stable/reference/generated/networkx.g
 4.2 Results
 ~~~~~~~~~~~
 
-.. raw:: html
-
-   <center>
-
 .. figure:: images/q7.png
-
-.. raw:: html
-
-   <div>
 
 Figure 4.1: approximate ratio of RQAOA and QAOA of depth :math:`p=1,2`
 of 20 instances on random regular graphs :math:`(n=15,d=6)`.
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-
-
-.. raw:: html
-
-   <center>
-
 .. figure:: images/q8.png
-
-.. raw:: html
-
-   <div>
 
 Figure 4.2: time consumed for RQAOA and QAOA of depth :math:`p=1,2` of
 20 instances on random regular graphs :math:`(n=15,d=6)`.
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-
-
-
-.. raw:: html
-
-   <center>
-
 .. figure:: images/q9.png
-
-.. raw:: html
-
-   <div>
 
 Figure 4.3: approximate ratio of RQAOA and QAOA of depth :math:`p=1,2`
 of 20 instances on Erdos-Renyi graphs with :math:`n=10` nodes.
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-
-
-   <center>
-
 .. figure:: images/q10.png
-
-.. raw:: html
-
-   <div>
 
 Figure 4.4: Iterations of RQAOA and QAOA of depth :math:`p=1,2` of 20
 instances on Erdos-Renyi graphs with :math:`n=10` nodes.
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-
-
-
-
-
-   <center>
-
 .. figure:: images/q11.png
-
-.. raw:: html
-
-   <div>
 
 Figure 4.5: approximate ratio of RQAOA and QAOA of depth :math:`p=1,2`
 of 20 instances on Erdos-Renyi graphs with :math:`n=6-11` nodes.
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
-
-
-.. raw:: html
-
-   <center>
-
 .. figure:: images/q12.png
-
-.. raw:: html
-
-   <div>
 
 Figure 4.6: Iterations of RQAOA and QAOA of depth :math:`p=1,2` of 20
 instances on Erdos-Renyi graphs with :math:`n=6-11` nodes.
 
-.. raw:: html
-
-   </div>
-
-::
-
-    <br>
-
-.. raw:: html
-
-   </center>
 
 
 

@@ -11,7 +11,6 @@ Welcome to benchmark's documentation!
    :caption: Contents:
 
    pages/QAOA benchmark
-   pages/QML benchmark
    pages/QC benchmark
    pages/VQE benchmark
    pages/Machine Learning in Phase Transition Benchmark
