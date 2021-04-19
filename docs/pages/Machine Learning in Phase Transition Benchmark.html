@@ -89,21 +89,24 @@
 <li class="toctree-l1"><a class="reference internal" href="VQE%20benchmark.html">VQE Benchmark</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Machine Learning in Phase Transition Benchmark</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#information">Information</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#machine-info-multithread-benchmark">Machine Info: Multithread Benchmark</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#python-info">Python Info</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#machine-info-temporary">Machine Info (Temporary)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#machine-info">Machine Info:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-version">Python Version</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dataset">Dataset</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#ising-model">Ising model</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#xy-model">XY model</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ising-model-with-magnetic-field">Ising model with magnetic field</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ising-model-with-unequal-coupling">Ising model with unequal coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dataset">Dataset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ising-model">Ising model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#q-potts-model">Q-Potts model</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#benchmarking-indicator">Benchmarking Indicator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preprocessing">Preprocessing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#confusion-model">Confusion model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#swipe-window-model">Swipe Window Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iteration-model">Iteration Model</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#list-of-machine-learning-methods">List of machine learning methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#total-result">Total Result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#codes">Codes</a></li>
 </ul>
 </li>
 </ul>
@@ -175,211 +178,1772 @@
 <h1>Machine Learning in Phase Transition Benchmark<a class="headerlink" href="#machine-learning-in-phase-transition-benchmark" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="information">
 <h2>Information<a class="headerlink" href="#information" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="machine-info-multithread-benchmark">
-<h3>Machine Info: Multithread Benchmark<a class="headerlink" href="#machine-info-multithread-benchmark" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="python-info">
-<h4>Python Info<a class="headerlink" href="#python-info" title="Permalink to this headline">¶</a></h4>
-<p>Python version: 3.6.3</p>
-<p>Torch version: 1.6.0</p>
+<div class="section" id="machine-info">
+<h3>Machine Info:<a class="headerlink" href="#machine-info" title="Permalink to this headline">¶</a></h3>
+<p>Tianhe 2k super computer</p>
+<p>CPU: Intel(R) Xeon(R) Gold 6150 CPU &#64; 2.70GHz * 30 core</p>
+<p>OS: Linux version 3.10.0-957.el7.x86_64</p>
 </div>
-<div class="section" id="machine-info-temporary">
-<h4>Machine Info (Temporary)<a class="headerlink" href="#machine-info-temporary" title="Permalink to this headline">¶</a></h4>
-<p>OS: Windows 10 x64</p>
-<p>CPU: Intel(R) Xeon(R) CPU E5-2699 v4 &#64; 2.20GHz 22 Core</p>
+<div class="section" id="python-version">
+<h3>Python Version<a class="headerlink" href="#python-version" title="Permalink to this headline">¶</a></h3>
+<p>Python: 3.6.7</p>
+<p>Pytorch: PyTorch/1.2.0-CUDA/10.0</p>
 </div>
 </div>
 <div class="section" id="dataset">
-<h3>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h3>
-<p>Benchmarks of a) Ising model; b) XY model; c) Ising model with magnetic
-field; d) Unequal coupling Ising model; e) Diluted Ising model</p>
+<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="ising-model">
-<h4>Ising model<a class="headerlink" href="#ising-model" title="Permalink to this headline">¶</a></h4>
+<h3>Ising model<a class="headerlink" href="#ising-model" title="Permalink to this headline">¶</a></h3>
 <p>Traditional 2-dimensional Ising model with periodic boundary condition.</p>
 <div class="math notranslate nohighlight">
-\[H=-J\sum_{i,j}s_i s_j\]</div>
-<p>, <span class="math notranslate nohighlight">\(s_i,s_j \in \{-1,1\}\)</span>, <span class="math notranslate nohighlight">\(&lt;i,j&gt;\)</span> are nearest neighbors.</p>
+\[H=-J\sum_{\langle i,j\rangle}s_i s_j, \quad s_i,s_j\in \{-1,1\},\langle i,j\rangle \text{ are nearest neighbors}\]</div>
 <p>Here we assume <span class="math notranslate nohighlight">\(J=1\)</span>, so there is a phase transition from order
 phase to disorder phase in critical temperature point
 <span class="math notranslate nohighlight">\(T_c=\frac{2}{\ln (1+\sqrt 2)}\approx2.269\)</span>.</p>
-<p>We have three Ising model datasets, with size 8x8, 12x12 and 16x16. The
-dataset is generated by cluster algorithm (Wolff algorithm).</p>
-<p>Each dataset concludes 5 columns: Temperature(‘temperature’),
-Configuration(‘conf’), Specific Heat Capacity(‘cv’),
-Susceptibility(‘sus’) and Average magnetization(‘m’)</p>
-<p>Average magnetization: <span class="math notranslate nohighlight">\(m=\sum_i s_i /N\)</span></p>
-<p>Susceptibility:</p>
+<p>There are five Ising model datasets, with size 8x8, 12x12, 16x16, 20x20
+and 24x24. The dataset is generated by cluster algorithm (Wolff
+algorithm).</p>
+<p>Data points are sampled from 4000 temperature points uniformly divided
+from <span class="math notranslate nohighlight">\(0.02\)</span> to <span class="math notranslate nohighlight">\(4.02\)</span>. For each temperature there are 10
+sampled data points. Each point has 5 columns:
+Temperature(‘temperature’), Configuration(‘conf’), Specific Heat
+Capacity(‘cv’), Susceptibility(‘sus’) and Average magnetization(‘m’).</p>
+<div class="figure align-default" id="id1">
+<img alt="image-20210416163615294" src="../_images/image-20210416163615294.png" />
+<p class="caption"><span class="caption-text">image-20210416163615294</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>Dataset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ising_data_model_size_8_smooth</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">ising_data_model_size_12_smooth</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">ising_data_model_size_16_smooth</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">ising_data_model_size_20_smooth</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">ising_data_model_size_24_smooth</span><span class="o">.</span><span class="n">pkl</span>
+</pre></div>
+</div>
+<p>Generate Ising dataset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ising</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="q-potts-model">
+<h3>Q-Potts model<a class="headerlink" href="#q-potts-model" title="Permalink to this headline">¶</a></h3>
+<p>Size 16 Q-Potts model with periodic boundary condition.</p>
 <div class="math notranslate nohighlight">
-\[\chi=\frac{(\langle m\rangle^2-\langle m^2 \rangle)}{T}\]</div>
-<p>Specific Heat Capacity:
-<span class="math notranslate nohighlight">\(C_V=\frac{(\langle m\rangle^2-\langle m^2 \rangle)}{T^2 N}\)</span></p>
-<p>Each dataset has 216320 data points. Temperature range is from 0.001 to
-4.499.</p>
-<p>For temperature in <span class="math notranslate nohighlight">\(T\in [2.2,2.3]\)</span>, the temperature gap is
-0.0001. For temperature out of the range, the gap is 0.001.</p>
-<p>Each temperature has 40 configurations. In each temperature, the
-configuration is initialized by random, and after 50000 Monte Carlo
-steps to evolve. Then each 5000 Monte Carlo steps will give 1
-configuration.</p>
+\[H_p =-J_p \sum_{\langle i,j\rangle} \delta(s_i,s_j), \quad s_i,s_j\in \{1,2,\cdots,q\}\]</div>
+<p>Here we assume <span class="math notranslate nohighlight">\(J_p=1\)</span>, so there is a phase transition from order
+phase to disorder phase in critical temperature point
+<span class="math notranslate nohighlight">\(T_c=\frac{1}{\ln (1+\sqrt q)}\)</span>.</p>
+<p>There are four q-potts model datasets with size 16 and q from 3 to 6.
+The dataset is generated by cluster algorithm (Wolff algorithm).</p>
+<p>Data points are sampled from 4000 temperature points uniformly divided
+from <span class="math notranslate nohighlight">\(0.02\)</span> to <span class="math notranslate nohighlight">\(3.02\)</span>. For each temperature there are 10
+sampled data points. Each point has 5 columns:
+Temperature(‘temperature’), Configuration(‘conf’), Specific Heat
+Capacity(‘cv’), Susceptibility(‘sus’) and Average magnetization(‘m’).</p>
+<div class="figure align-default" id="id2">
+<img alt="image-20210416163921134" src="../_images/image-20210416163921134.png" />
+<p class="caption"><span class="caption-text">image-20210416163921134</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-<div class="section" id="xy-model">
-<h4>XY model<a class="headerlink" href="#xy-model" title="Permalink to this headline">¶</a></h4>
-<p>Traditional 2-dimensional XY model with periodic boundary condition.</p>
-<p><span class="math notranslate nohighlight">\(H=-J\sum_{i,j} \vec s_i \cdot \vec s_j\)</span>,
-<span class="math notranslate nohighlight">\(\vec s_i=(\cos \theta_i , \sin \theta_i)\)</span> ,<span class="math notranslate nohighlight">\(&lt;i,j&gt;\)</span> are
-nearest neighbors.</p>
-<p>There is not a conventional phase transition present that would be
-associated with <a class="reference external" href="https://en.wikipedia.org/wiki/Symmetry_breaking">symmetry
-breaking</a>. The
-system does show signs of a transition from a disordered
-high-temperature state to a quasi-ordered state below some critical
-temperature, called the <a class="reference external" href="https://en.wikipedia.org/wiki/Kosterlitz-Thouless_transition">Kosterlitz-Thouless
-transition</a>.</p>
-<p>Approximately, there has a critical temperature
-<span class="math notranslate nohighlight">\(\frac{2T_c}{J}\ln \frac{2T_c}{J}=1\)</span> and
-<span class="math notranslate nohighlight">\(T_c/J\approx 0.8816\)</span>.</p>
-<p>The dataset concludes 4 columns: Temperature(‘temperature’),
-Configuration(‘conf’), Average magnetization(‘m’) and squared
-magnetization (ms)</p>
-<p>average magnetization:
-<span class="math notranslate nohighlight">\(m=|\langle(\sum_i \cos\theta_i , \sum_i \sin\theta_i)\rangle|/N\)</span></p>
-<p>squared magnetization:
-<span class="math notranslate nohighlight">\(m^2 =\frac{1}{N^2}\langle(\sum_i \cos\theta_i)^2+(\sum_i\sin\theta_i)^2 \rangle\)</span></p>
-<p>The dataset has 200000 data points. Temperature range from 0.02 to 5.02,
-temperature gap is 0.001, each temperature has 40 configurations. In
-each temperature, the configuration is initialized by random, and after
-50000 Monte Carlo steps to evolve. Then each 5000 Monte Carlo steps will
-give 1 configuration.</p>
+<p>Dataset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">q_3_data_model_size_16_smooth</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">q_4_data_model_size_16_smooth</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">q_5_data_model_size_16_smooth</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">q_6_data_model_size_16_smooth</span><span class="o">.</span><span class="n">pkl</span>
+</pre></div>
 </div>
-<div class="section" id="ising-model-with-magnetic-field">
-<h4>Ising model with magnetic field<a class="headerlink" href="#ising-model-with-magnetic-field" title="Permalink to this headline">¶</a></h4>
-<p>Traditional 2-dimensional Ising model in magnetic field with periodic
-boundary condition.</p>
-<div class="math notranslate nohighlight">
-\[H=-J\sum_{i,j}s_i s+h\sum_i s_i\]</div>
-<p>, <span class="math notranslate nohighlight">\(s_i,s_j \in \{-1,1\}\)</span>, <span class="math notranslate nohighlight">\(&lt;i,j&gt;\)</span> are nearest neighbors.</p>
-<p>At a constant temperature, the model will have or not have a phase
-transition when <span class="math notranslate nohighlight">\(h\)</span> varies from minus to plus. At <span class="math notranslate nohighlight">\(T&lt;T_c\)</span>,
-there is a phase transition at <span class="math notranslate nohighlight">\(h=0\)</span> and a delay phenomenon. At
-<span class="math notranslate nohighlight">\(T&gt;T_c\)</span> there is no phase transition.</p>
-<p>The dataset has three columns. Configuration (‘conf’), out magnetic
-field (‘mag’) and magnetization (‘m’).</p>
-<p>Average magnetization: <span class="math notranslate nohighlight">\(m=\sum_i s_i /N\)</span></p>
-<p>The dataset has 200000 data points. out magnetic field range from -6.02
-to 6.02, field gap is 0.0024, each temperature has 40 configurations. In
-each magnetic field, the configuration is initialized by random, and
-after 50000 Monte Carlo steps to evolve. Then each 5000 Monte Carlo
-steps will give 1 configuration.</p>
-</div>
-<div class="section" id="ising-model-with-unequal-coupling">
-<h4>Ising model with unequal coupling<a class="headerlink" href="#ising-model-with-unequal-coupling" title="Permalink to this headline">¶</a></h4>
-<p>Traditional 2-dimensional Ising model with unequal coupling with
-periodic boundary condition.</p>
-<div class="math notranslate nohighlight">
-\[H=-J_x\sum_{i,j}s_{i,j} s_{i+1,j}-J_y\sum_{i,j}s_{i,j} s_{i,j+1}\]</div>
-<p>, <span class="math notranslate nohighlight">\(s_i,s_j \in \{-1,1\}\)</span></p>
-<p>Here we assume <span class="math notranslate nohighlight">\(J_x=1\)</span>, so there is a phase transition from order
-phase to disorder phase in critical temperature point <span class="math notranslate nohighlight">\(T_c \)</span>sinh(2/T_c)sinh(2J_y/T_c)=1`.</p>
-<p>The dataset has three columns. Configuration (‘conf’),
-Temperature(‘temperature’) and magnetization (‘m’).</p>
-<p>Average magnetization: <span class="math notranslate nohighlight">\(m=\sum_i s_i /N\)</span></p>
-<p>The dataset has 200000 data points. Temperature range from 0.02 to 6.02,
-field gap is 0.0012, each temperature has 40 configurations. In each
-magnetic field, the configuration is initialized by random, and after
-50000 Monte Carlo steps to evolve. Then each 5000 Monte Carlo steps will
-give 1 configuration.</p>
+<p>Generate Ising dataset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ising</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="list-of-machine-learning-methods">
-<h2>List of machine learning methods<a class="headerlink" href="#list-of-machine-learning-methods" title="Permalink to this headline">¶</a></h2>
-<p>Confusion Learning: W-shape accuracy curve</p>
-<p>Full Connection Neural Network</p>
-<p>Code: Done</p>
-<p>Data: Ising model, size 8x8, total 200000 figure</p>
-<p>Training: 193214s=53h40m</p>
-<p>Accuracy: T = 2.4-2.8</p>
-<p>Generalize: Not good</p>
-<p>Unsupervised Learning of Phase Transitions: From Principal Component
-Analysis to Variational Autoencoders</p>
-<p>Unsupervised Learning: PCA and Autoencoder</p>
-<p>Parameters in PCA or autoencoder are close approximation to the
-magnetization</p>
-<p>No indicator, no benchmarking</p>
-<p>Code: PCA: Done, Variational Autoencoder: No</p>
-<p>Data: Ising model, size 8x8/4x4, each 200000 figure</p>
-<p>PCA: Reproduced, Variational Autoencoder: No</p>
-<p>Discovering Phases, Phase Transitions and Crossovers through
-Unsupervised Machine Learning: A critical examination</p>
-<p>Unsupervised Learning: PCA and Autoencoder</p>
-<p>Parameters in PCA are close approximation to the magnetization AND
-susceptibility</p>
-<p>No indicator, no benchmarking</p>
-<p>Code: PCA: Done, Variational Autoencoder: No</p>
-<p>Data: Ising model, size 8x8/4x4, each 200000 figure</p>
-<p>PCA: Reproduced, Variational Autoencoder: No</p>
-<p>Self-Learning Phase Boundary by Active Contours</p>
-<p>Confusion Scheme</p>
-<p>Guesser – Learner:</p>
-<p>Code: Writing</p>
-<p>Data: Ising model, size 8x8, total 20000 figure</p>
-<p>​ Ising model, size 8x8, each 200000 figure</p>
-<p>Quantum phase recognition via unsupervised machine learning</p>
-<p>Parameter Window</p>
-<p>Code: Done</p>
-<p>Data: Ising model, size 8x8, each 200000 figure</p>
-<p>Training: 29882s / 5125s</p>
-<p>Machine Learning Vortices at the Kosterlitz-Thouless Transition</p>
-<p>One Layer Network</p>
-<p>Convolution Neural Network</p>
-<p>Learn by confusion: W-Shape Curve</p>
-<p>Code: Done</p>
-<p>Data: Ising model, size 8x8, each 200000 figure</p>
-<p>Training: Small dataset</p>
-<p>Deep Neural Network Detects Quantum Phase Transition</p>
-<p>Multi Layer Perceptrons</p>
-<p>Learning thermodynamic variables</p>
-<p>Weights of layers can fit transition point (tanh)</p>
-<p>Code: Done</p>
-<p>Data: Ising model, size 8x8, total 200000 figure</p>
-<p>​ vh model, size 8x8, total 3000 figure</p>
-<p>Training: In small dataset, very slow, need fix</p>
-<p>Machine Learning of Phase Transitions in the Percolation and XY Models</p>
-<p>Site and Bond Percolations / XY model</p>
-<p>FCN / CNN / Cluster Identifying</p>
-<p>Code: Done</p>
-<p>Data: Ising model, size 8x8, total 200000 figure</p>
-<p>​ XY model, 200000 figure, genreating</p>
-<p>​ Percolations, not ready</p>
-<p>Training: Waiting</p>
-<p>Identifying Quantum Phase Transitions Using Artificial Neural Networks
-on Experimental Data</p>
-<p>Experimental Haldane Model</p>
-<p>FCN / CNN / Cluster Identifying</p>
-<p>Self-Organizing Maps as a Method for Detecting Phase Transitions and
-Phase Identification</p>
-<p>2D FM model</p>
-<p>Self-Organizing Maps – Unsupervised Learning</p>
-<p>Topological Phase Transition</p>
-<p>Divergence of Predictive Model Output as Indication of Phase Transitions</p>
-<p>S(T) è T</p>
-<p>MSE loss function</p>
-<p>δT will have a maximum at phase transition point</p>
-<p>Code: Draft</p>
-<p>Data: Small dataset</p>
-<p>Train: not good result</p>
-<p>Phase Transition Encoded in Neural Network</p>
-<p>Toy model: one hidden layer three neuron</p>
-<p>Hidden layer neurons have physical meaning</p>
-<p>Code: Done</p>
-<p>Data: Small dataset</p>
-<p>Train: Reproduced</p>
-<p>Machine Learning as a Universal Tool for Quantitative Investigations of
-Phase Transition</p>
-<p>Support Vector Machine</p>
-<p>Textbook-like, critical exponents</p>
-<p>Code: draft</p>
-<p>Data: Small dataset</p>
-<p>Train: Reproduced in small dataset</p>
+<div class="section" id="benchmarking-indicator">
+<h2>Benchmarking Indicator<a class="headerlink" href="#benchmarking-indicator" title="Permalink to this headline">¶</a></h2>
+<p>1.Information for training</p>
+<p>2.Training time</p>
+<p>3.Accuracy</p>
+<p>4.Generalization</p>
+</div>
+<div class="section" id="preprocessing">
+<h2>Preprocessing<a class="headerlink" href="#preprocessing" title="Permalink to this headline">¶</a></h2>
+<p>All data are processed by SVD decomposition.</p>
+<div class="section" id="confusion-model">
+<h3>Confusion model<a class="headerlink" href="#confusion-model" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-default" id="id3">
+<img alt="image-20210416165029350" src="../_images/image-20210416165029350.png" />
+<p class="caption"><span class="caption-text">image-20210416165029350</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id4">
+<img alt="image-20210416165033174" src="../_images/image-20210416165033174.png" />
+<p class="caption"><span class="caption-text">image-20210416165033174</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<p>Using confusion model to make a W-shape curve.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 2%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 2%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 2%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 2%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>time</p></th>
+<th class="head"><p>acc</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"><p>acc</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Size</p></td>
+<td><p>8</p></td>
+<td></td>
+<td></td>
+<td><p>12</p></td>
+<td></td>
+<td></td>
+<td><p>16</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>20</p></td>
+<td></td>
+<td></td>
+<td><p>24</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Type</p></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>3</p></td>
+<td></td>
+<td></td>
+<td><p>4</p></td>
+<td></td>
+<td></td>
+<td><p>5</p></td>
+<td></td>
+<td></td>
+<td><p>6</p></td>
+<td></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Confusion-0.1</p></td>
+<td><p>12215</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>11234</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>11968</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>11900</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>12864</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>12749</p></td>
+<td><p>0.8</p></td>
+<td><p>0.051528</p></td>
+<td><p>12049</p></td>
+<td><p>0.7</p></td>
+<td><p>0.107607</p></td>
+<td><p>13282</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>15721</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+</tr>
+<tr class="row-odd"><td><p>Confusion-0.05</p></td>
+<td><p>23684</p></td>
+<td><p>2.25</p></td>
+<td><p>0.019185</p></td>
+<td><p>22451</p></td>
+<td><p>2.25</p></td>
+<td><p>0.019185</p></td>
+<td><p>24428</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>24522</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>24987</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>25057</p></td>
+<td><p>0.85</p></td>
+<td><p>0.001528</p></td>
+<td><p>25057</p></td>
+<td><p>0.75</p></td>
+<td><p>0.057607</p></td>
+<td><p>25486</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>24319</p></td>
+<td><p>2.25</p></td>
+<td><p>0.019185</p></td>
+</tr>
+</tbody>
+</table>
+<p>Require: Continuous phase parameter. Single Phase Transition.</p>
+<p>Parameters: Step (accuracy)</p>
+<p>Time cost: ∝ data size, ∝ 1/accuracy, cost most</p>
+<p>Generation: Use trained neural network to classify other dataset</p>
+<div class="figure align-default" id="id5">
+<img alt="image-20210416165325639" src="../_images/image-20210416165325639.png" />
+<p class="caption"><span class="caption-text">image-20210416165325639</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id6">
+<img alt="image-20210416165411466" src="../_images/image-20210416165411466.png" />
+<p class="caption"><span class="caption-text">image-20210416165411466</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id7">
+<img alt="image-20210416165426607" src="../_images/image-20210416165426607.png" />
+<p class="caption"><span class="caption-text">image-20210416165426607</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="swipe-window-model">
+<h3>Swipe Window Model<a class="headerlink" href="#swipe-window-model" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-default" id="id8">
+<img alt="image-20210416165447087" src="../_images/image-20210416165447087.png" />
+<p class="caption"><span class="caption-text">image-20210416165447087</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+<p>Using a swipe window to detect the phase transition point</p>
+<div class="figure align-default" id="id9">
+<img alt="image-20210416165616963" src="../_images/image-20210416165616963.png" />
+<p class="caption"><span class="caption-text">image-20210416165616963</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>time</p></th>
+<th class="head"><p>acc</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"><p>acc</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Size</p></td>
+<td><p>8</p></td>
+<td></td>
+<td></td>
+<td><p>12</p></td>
+<td></td>
+<td></td>
+<td><p>16</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>20</p></td>
+<td></td>
+<td></td>
+<td><p>24</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Type</p></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>3</p></td>
+<td></td>
+<td></td>
+<td><p>4</p></td>
+<td></td>
+<td></td>
+<td><p>5</p></td>
+<td></td>
+<td></td>
+<td><p>6</p></td>
+<td></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Swipe-window-0.1-0.2</p></td>
+<td><p>494</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>569</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>569</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>572</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>562</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>581</p></td>
+<td><p>0.8</p></td>
+<td><p>0.051528</p></td>
+<td><p>579</p></td>
+<td><p>0.7</p></td>
+<td><p>0.107607</p></td>
+<td><p>758</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>905</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+</tr>
+<tr class="row-even"><td><p>Swipe-window-0.1-0.4</p></td>
+<td><p>845</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>945</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>1022</p></td>
+<td><p>2.4</p></td>
+<td><p>0.130815</p></td>
+<td><p>934</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>926</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>939</p></td>
+<td><p>0.8</p></td>
+<td><p>0.051528</p></td>
+<td><p>937</p></td>
+<td><p>0.7</p></td>
+<td><p>0.107607</p></td>
+<td><p>1108</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>1225</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+</tr>
+<tr class="row-odd"><td><p>Swipe-window-0.1-0.8</p></td>
+<td><p>1449</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>1555</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>1583</p></td>
+<td><p>2.4</p></td>
+<td><p>0.130815</p></td>
+<td><p>1526</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>1401</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>1449</p></td>
+<td><p>0.8</p></td>
+<td><p>0.051528</p></td>
+<td><p>1380</p></td>
+<td><p>0.8</p></td>
+<td><p>0.007607</p></td>
+<td><p>1760</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>1877</p></td>
+<td><p>2.1</p></td>
+<td><p>0.169185</p></td>
+</tr>
+<tr class="row-even"><td><p>Swipe-window-0.02-0.2</p></td>
+<td><p>2479</p></td>
+<td><p>2.38</p></td>
+<td><p>0.110815</p></td>
+<td><p>2795</p></td>
+<td><p>2.22</p></td>
+<td><p>0.049185</p></td>
+<td><p>2824</p></td>
+<td><p>2.32</p></td>
+<td><p>0.050815</p></td>
+<td><p>2827</p></td>
+<td><p>1.02</p></td>
+<td><p>0.025027</p></td>
+<td><p>2803</p></td>
+<td><p>0.92</p></td>
+<td><p>0.009761</p></td>
+<td><p>2846</p></td>
+<td><p>0.82</p></td>
+<td><p>0.031528</p></td>
+<td><p>2919</p></td>
+<td><p>0.76</p></td>
+<td><p>0.047607</p></td>
+<td><p>3800</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>4280</p></td>
+<td><p>2.12</p></td>
+<td><p>0.149185</p></td>
+</tr>
+<tr class="row-odd"><td><p>Swipe-window-0.02-0.4</p></td>
+<td><p>4238</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>4521</p></td>
+<td><p>2.18</p></td>
+<td><p>0.089185</p></td>
+<td><p>4349</p></td>
+<td><p>2.28</p></td>
+<td><p>0.010815</p></td>
+<td><p>4508</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>4576</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>4561</p></td>
+<td><p>0.84</p></td>
+<td><p>0.011528</p></td>
+<td><p>4614</p></td>
+<td><p>0.76</p></td>
+<td><p>0.047607</p></td>
+<td><p>5554</p></td>
+<td><p>2.24</p></td>
+<td><p>0.029185</p></td>
+<td><p>6115</p></td>
+<td><p>2.14</p></td>
+<td><p>0.129185</p></td>
+</tr>
+<tr class="row-even"><td><p>Swipe-window-0.02-0.8</p></td>
+<td><p>7074</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>7428</p></td>
+<td><p>2.24</p></td>
+<td><p>0.029185</p></td>
+<td><p>7206</p></td>
+<td><p>2.22</p></td>
+<td><p>0.049185</p></td>
+<td><p>7085</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>7034</p></td>
+<td><p>0.92</p></td>
+<td><p>0.009761</p></td>
+<td><p>7249</p></td>
+<td><p>0.84</p></td>
+<td><p>0.011528</p></td>
+<td><p>7121</p></td>
+<td><p>0.76</p></td>
+<td><p>0.047607</p></td>
+<td><p>8462</p></td>
+<td><p>2.26</p></td>
+<td><p>0.009185</p></td>
+<td><p>9176</p></td>
+<td><p>2.18</p></td>
+<td><p>0.089185</p></td>
+</tr>
+</tbody>
+</table>
+<p>Require: Continuous phase parameter.</p>
+<p>Parameters: Step (accuracy), Window size (stable)</p>
+<p>Time cost: ∝ data size, ∝ window size, cost little</p>
+<p>Not very stable</p>
+<p>Generation:</p>
+<div class="figure align-default" id="id10">
+<img alt="image-20210416165631896" src="../_images/image-20210416165631896.png" />
+<p class="caption"><span class="caption-text">image-20210416165631896</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="iteration-model">
+<h3>Iteration Model<a class="headerlink" href="#iteration-model" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-default" id="id11">
+<img alt="image-20210416165646479" src="../_images/image-20210416165646479.png" />
+<p class="caption"><span class="caption-text">image-20210416165646479</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+<div class="figure align-default" id="id12">
+<img alt="image-20210416165650998" src="../_images/image-20210416165650998.png" />
+<p class="caption"><span class="caption-text">image-20210416165650998</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
+<p>The extreme data at both ends are used as the starting point, the
+intermediate data is judged and added to both ends, and the intermediate
+range is reduced through constant iteration to determine the position of
+the phase transition point.</p>
+<div class="figure align-default" id="id13">
+<img alt="image-20210416170023311" src="../_images/image-20210416170023311.png" />
+<p class="caption"><span class="caption-text">image-20210416170023311</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</div>
+<p>Require: Continuous phase parameter. Single Phase Transition.</p>
+<p>Parameters: Accuracy, Start of interval, (criterion)</p>
+<p>Cost time: data size, accuracy.</p>
+<p>Unstable: may failed, need to try several times</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 2%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>time</p></th>
+<th class="head"><p>acc</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"><p>acc</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Size</p></td>
+<td><p>8</p></td>
+<td></td>
+<td></td>
+<td><p>12</p></td>
+<td></td>
+<td></td>
+<td><p>16</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>20</p></td>
+<td></td>
+<td></td>
+<td><p>24</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Type</p></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>3</p></td>
+<td></td>
+<td></td>
+<td><p>4</p></td>
+<td></td>
+<td></td>
+<td><p>5</p></td>
+<td></td>
+<td></td>
+<td><p>6</p></td>
+<td></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>iteration-0.1-0.1</p></td>
+<td><p>220</p></td>
+<td><p>2.2078</p></td>
+<td><p>0.061385</p></td>
+<td><p>261</p></td>
+<td><p>2.2495</p></td>
+<td><p>0.019685</p></td>
+<td><p>340</p></td>
+<td><p>2.2629</p></td>
+<td><p>0.006285</p></td>
+<td><p>323</p></td>
+<td><p>0.9468</p></td>
+<td><p>0.048173</p></td>
+<td></td>
+<td><p>0.91</p></td>
+<td><p>0.000239</p></td>
+<td><p>304</p></td>
+<td><p>0.8235</p></td>
+<td><p>0.028028</p></td>
+<td><p>301</p></td>
+<td><p>0.7432</p></td>
+<td><p>0.064407</p></td>
+<td><p>452</p></td>
+<td><p>2.2078</p></td>
+<td><p>0.061385</p></td>
+<td><p>528</p></td>
+<td><p>2.1835</p></td>
+<td><p>0.085685</p></td>
+</tr>
+<tr class="row-even"><td><p>iteration-0.1-0.25</p></td>
+<td><p>219</p></td>
+<td><p>2.2689</p></td>
+<td><p>0.000285</p></td>
+<td><p>268</p></td>
+<td><p>2.2422</p></td>
+<td><p>0.026985</p></td>
+<td><p>355</p></td>
+<td><p>2.2792</p></td>
+<td><p>0.010015</p></td>
+<td><p>321</p></td>
+<td><p>0.9521</p></td>
+<td><p>0.042873</p></td>
+<td><p>304</p></td>
+<td><p>0.8713</p></td>
+<td><p>0.038939</p></td>
+<td><p>319</p></td>
+<td><p>0.7972</p></td>
+<td><p>0.054328</p></td>
+<td><p>297</p></td>
+<td><p>0.7525</p></td>
+<td><p>0.055107</p></td>
+<td><p>449</p></td>
+<td><p>2.2422</p></td>
+<td><p>0.026985</p></td>
+<td><p>564</p></td>
+<td><p>2.2263</p></td>
+<td><p>0.042885</p></td>
+</tr>
+<tr class="row-odd"><td><p>iteration-0.1-0.4</p></td>
+<td><p>216</p></td>
+<td><p>2.2364</p></td>
+<td><p>0.032785</p></td>
+<td><p>258</p></td>
+<td><p>2.2954</p></td>
+<td><p>0.026215</p></td>
+<td><p>355</p></td>
+<td><p>2.2367</p></td>
+<td><p>0.032485</p></td>
+<td><p>277</p></td>
+<td><p>0.9392</p></td>
+<td><p>0.055773</p></td>
+<td><p>278</p></td>
+<td><p>0.8811</p></td>
+<td><p>0.029139</p></td>
+<td><p>289</p></td>
+<td><p>0.8301</p></td>
+<td><p>0.021428</p></td>
+<td><p>310</p></td>
+<td><p>0.808</p></td>
+<td><p>0.000393</p></td>
+<td><p>457</p></td>
+<td><p>2.2364</p></td>
+<td><p>0.032785</p></td>
+<td><p>827</p></td>
+<td><p>2.2144</p></td>
+<td><p>0.054785</p></td>
+</tr>
+<tr class="row-even"><td><p>iteration-0.05-0.1</p></td>
+<td><p>287</p></td>
+<td><p>2.2084</p></td>
+<td><p>0.060785</p></td>
+<td><p>328</p></td>
+<td><p>2.2426</p></td>
+<td><p>0.026585</p></td>
+<td><p>461</p></td>
+<td><p>2.2931</p></td>
+<td><p>0.023915</p></td>
+<td><p>395</p></td>
+<td><p>0.9737</p></td>
+<td><p>0.021273</p></td>
+<td><p>369</p></td>
+<td><p>0.9019</p></td>
+<td><p>0.008339</p></td>
+<td><p>359</p></td>
+<td><p>0.8198</p></td>
+<td><p>0.031728</p></td>
+<td><p>369</p></td>
+<td><p>0.747</p></td>
+<td><p>0.060607</p></td>
+<td><p>570</p></td>
+<td><p>2.2605</p></td>
+<td><p>0.008685</p></td>
+<td><p>673</p></td>
+<td><p>2.2226</p></td>
+<td><p>0.046585</p></td>
+</tr>
+<tr class="row-odd"><td><p>iteration-0.05-0.25</p></td>
+<td><p>287</p></td>
+<td><p>2.2549</p></td>
+<td><p>0.014285</p></td>
+<td><p>314</p></td>
+<td><p>2.2256</p></td>
+<td><p>0.043585</p></td>
+<td><p>399</p></td>
+<td><p>2.2457</p></td>
+<td><p>0.023485</p></td>
+<td><p>362</p></td>
+<td><p>0.9549</p></td>
+<td><p>0.040073</p></td>
+<td><p>369</p></td>
+<td><p>0.881</p></td>
+<td><p>0.029239</p></td>
+<td><p>366</p></td>
+<td><p>0.8386</p></td>
+<td><p>0.012928</p></td>
+<td><p>369</p></td>
+<td><p>0.7496</p></td>
+<td><p>0.058007</p></td>
+<td><p>544</p></td>
+<td><p>2.2837</p></td>
+<td><p>0.014515</p></td>
+<td><p>611</p></td>
+<td><p>2.2275</p></td>
+<td><p>0.041685</p></td>
+</tr>
+<tr class="row-even"><td><p>iteration-0.05-0.4</p></td>
+<td><p>259</p></td>
+<td><p>2.2794</p></td>
+<td><p>0.010215</p></td>
+<td><p>316</p></td>
+<td><p>2.2259</p></td>
+<td><p>0.043285</p></td>
+<td><p>418</p></td>
+<td><p>2.2747</p></td>
+<td><p>0.005515</p></td>
+<td><p>348</p></td>
+<td><p>0.9517</p></td>
+<td><p>0.043273</p></td>
+<td><p>377</p></td>
+<td><p>0.8994</p></td>
+<td><p>0.010839</p></td>
+<td><p>360</p></td>
+<td><p>0.8175</p></td>
+<td><p>0.034028</p></td>
+<td><p>364</p></td>
+<td><p>0.7581</p></td>
+<td><p>0.049507</p></td>
+<td><p>519</p></td>
+<td><p>2.2924</p></td>
+<td><p>0.023215</p></td>
+<td><p>650</p></td>
+<td><p>2.2234</p></td>
+<td><p>0.045785</p></td>
+</tr>
+<tr class="row-odd"><td><p>iteration-0.02-0.1</p></td>
+<td><p>326</p></td>
+<td><p>2.2374</p></td>
+<td><p>0.031785</p></td>
+<td><p>396</p></td>
+<td><p>2.2328</p></td>
+<td><p>0.036385</p></td>
+<td><p>531</p></td>
+<td><p>2.2839</p></td>
+<td><p>0.014715</p></td>
+<td><p>457</p></td>
+<td><p>0.977</p></td>
+<td><p>0.017973</p></td>
+<td><p>477</p></td>
+<td><p>0.8875</p></td>
+<td><p>0.022739</p></td>
+<td><p>473</p></td>
+<td><p>0.8262</p></td>
+<td><p>0.025328</p></td>
+<td><p>516</p></td>
+<td><p>0.7479</p></td>
+<td><p>0.059707</p></td>
+<td><p>667</p></td>
+<td><p>2.2599</p></td>
+<td><p>0.009285</p></td>
+<td><p>789</p></td>
+<td><p>2.2077</p></td>
+<td><p>0.061485</p></td>
+</tr>
+<tr class="row-even"><td><p>iteration-0.02-0.25</p></td>
+<td><p>311</p></td>
+<td><p>2.2479</p></td>
+<td><p>0.021285</p></td>
+<td><p>391</p></td>
+<td><p>2.2479</p></td>
+<td><p>0.021285</p></td>
+<td><p>523</p></td>
+<td><p>2.2843</p></td>
+<td><p>0.015115</p></td>
+<td><p>445</p></td>
+<td><p>0.9671</p></td>
+<td><p>0.027873</p></td>
+<td><p>445</p></td>
+<td><p>0.8986</p></td>
+<td><p>0.011639</p></td>
+<td><p>463</p></td>
+<td><p>0.8285</p></td>
+<td><p>0.023028</p></td>
+<td><p>465</p></td>
+<td><p>0.7542</p></td>
+<td><p>0.053407</p></td>
+<td><p>648</p></td>
+<td><p>2.2237</p></td>
+<td><p>0.045485</p></td>
+<td><p>777</p></td>
+<td><p>2.2043</p></td>
+<td><p>0.064885</p></td>
+</tr>
+<tr class="row-odd"><td><p>iteration-0.02-0.4</p></td>
+<td><p>336</p></td>
+<td><p>2.1557</p></td>
+<td><p>0.113485</p></td>
+<td><p>418</p></td>
+<td><p>2.23</p></td>
+<td><p>0.039185</p></td>
+<td><p>499</p></td>
+<td><p>2.2477</p></td>
+<td><p>0.021485</p></td>
+<td><p>480</p></td>
+<td><p>0.9532</p></td>
+<td><p>0.041773</p></td>
+<td><p>447</p></td>
+<td><p>0.8973</p></td>
+<td><p>0.012939</p></td>
+<td><p>445</p></td>
+<td><p>0.8198</p></td>
+<td><p>0.031728</p></td>
+<td><p>444</p></td>
+<td><p>0.7528</p></td>
+<td><p>0.054807</p></td>
+<td><p>670</p></td>
+<td><p>2.2454</p></td>
+<td><p>0.023785</p></td>
+<td><p>806</p></td>
+<td><p>2.2218</p></td>
+<td><p>0.047385</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="total-result">
+<h2>Total Result<a class="headerlink" href="#total-result" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>time</p></th>
+<th class="head"><p>acc</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"><p>acc</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Size</p></td>
+<td><p>8</p></td>
+<td></td>
+<td></td>
+<td><p>12</p></td>
+<td></td>
+<td></td>
+<td><p>16</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>20</p></td>
+<td></td>
+<td></td>
+<td><p>24</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Type</p></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>3</p></td>
+<td></td>
+<td></td>
+<td><p>4</p></td>
+<td></td>
+<td></td>
+<td><p>5</p></td>
+<td></td>
+<td></td>
+<td><p>6</p></td>
+<td></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td><p>Ising model</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Confusion-0.1</p></td>
+<td><p>12215</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>11234</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>11968</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>11900</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>12864</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>12749</p></td>
+<td><p>0.8</p></td>
+<td><p>0.051528</p></td>
+<td><p>12049</p></td>
+<td><p>0.7</p></td>
+<td><p>0.107607</p></td>
+<td><p>13282</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>15721</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+</tr>
+<tr class="row-odd"><td><p>Confusion-0.05</p></td>
+<td><p>23684</p></td>
+<td><p>2.25</p></td>
+<td><p>0.019185</p></td>
+<td><p>22451</p></td>
+<td><p>2.25</p></td>
+<td><p>0.019185</p></td>
+<td><p>24428</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>24522</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>24987</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>25057</p></td>
+<td><p>0.85</p></td>
+<td><p>0.001528</p></td>
+<td><p>25057</p></td>
+<td><p>0.75</p></td>
+<td><p>0.057607</p></td>
+<td><p>25486</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>24319</p></td>
+<td><p>2.25</p></td>
+<td><p>0.019185</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Swipe-window-0.1-0.2</p></td>
+<td><p>494</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>569</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>569</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>572</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>562</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>581</p></td>
+<td><p>0.8</p></td>
+<td><p>0.051528</p></td>
+<td><p>579</p></td>
+<td><p>0.7</p></td>
+<td><p>0.107607</p></td>
+<td><p>758</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>905</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+</tr>
+<tr class="row-even"><td><p>Swipe-window-0.1-0.4</p></td>
+<td><p>845</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>945</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>1022</p></td>
+<td><p>2.4</p></td>
+<td><p>0.130815</p></td>
+<td><p>934</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>926</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>939</p></td>
+<td><p>0.8</p></td>
+<td><p>0.051528</p></td>
+<td><p>937</p></td>
+<td><p>0.7</p></td>
+<td><p>0.107607</p></td>
+<td><p>1108</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>1225</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+</tr>
+<tr class="row-odd"><td><p>Swipe-window-0.1-0.8</p></td>
+<td><p>1449</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>1555</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>1583</p></td>
+<td><p>2.4</p></td>
+<td><p>0.130815</p></td>
+<td><p>1526</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>1401</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>1449</p></td>
+<td><p>0.8</p></td>
+<td><p>0.051528</p></td>
+<td><p>1380</p></td>
+<td><p>0.8</p></td>
+<td><p>0.007607</p></td>
+<td><p>1760</p></td>
+<td><p>2.2</p></td>
+<td><p>0.069185</p></td>
+<td><p>1877</p></td>
+<td><p>2.1</p></td>
+<td><p>0.169185</p></td>
+</tr>
+<tr class="row-even"><td><p>Swipe-window-0.02-0.2</p></td>
+<td><p>2479</p></td>
+<td><p>2.38</p></td>
+<td><p>0.110815</p></td>
+<td><p>2795</p></td>
+<td><p>2.22</p></td>
+<td><p>0.049185</p></td>
+<td><p>2824</p></td>
+<td><p>2.32</p></td>
+<td><p>0.050815</p></td>
+<td><p>2827</p></td>
+<td><p>1.02</p></td>
+<td><p>0.025027</p></td>
+<td><p>2803</p></td>
+<td><p>0.92</p></td>
+<td><p>0.009761</p></td>
+<td><p>2846</p></td>
+<td><p>0.82</p></td>
+<td><p>0.031528</p></td>
+<td><p>2919</p></td>
+<td><p>0.76</p></td>
+<td><p>0.047607</p></td>
+<td><p>3800</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>4280</p></td>
+<td><p>2.12</p></td>
+<td><p>0.149185</p></td>
+</tr>
+<tr class="row-odd"><td><p>Swipe-window-0.02-0.4</p></td>
+<td><p>4238</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>4521</p></td>
+<td><p>2.18</p></td>
+<td><p>0.089185</p></td>
+<td><p>4349</p></td>
+<td><p>2.28</p></td>
+<td><p>0.010815</p></td>
+<td><p>4508</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>4576</p></td>
+<td><p>0.9</p></td>
+<td><p>0.010239</p></td>
+<td><p>4561</p></td>
+<td><p>0.84</p></td>
+<td><p>0.011528</p></td>
+<td><p>4614</p></td>
+<td><p>0.76</p></td>
+<td><p>0.047607</p></td>
+<td><p>5554</p></td>
+<td><p>2.24</p></td>
+<td><p>0.029185</p></td>
+<td><p>6115</p></td>
+<td><p>2.14</p></td>
+<td><p>0.129185</p></td>
+</tr>
+<tr class="row-even"><td><p>Swipe-window-0.02-0.8</p></td>
+<td><p>7074</p></td>
+<td><p>2.3</p></td>
+<td><p>0.030815</p></td>
+<td><p>7428</p></td>
+<td><p>2.24</p></td>
+<td><p>0.029185</p></td>
+<td><p>7206</p></td>
+<td><p>2.22</p></td>
+<td><p>0.049185</p></td>
+<td><p>7085</p></td>
+<td><p>1</p></td>
+<td><p>0.005027</p></td>
+<td><p>7034</p></td>
+<td><p>0.92</p></td>
+<td><p>0.009761</p></td>
+<td><p>7249</p></td>
+<td><p>0.84</p></td>
+<td><p>0.011528</p></td>
+<td><p>7121</p></td>
+<td><p>0.76</p></td>
+<td><p>0.047607</p></td>
+<td><p>8462</p></td>
+<td><p>2.26</p></td>
+<td><p>0.009185</p></td>
+<td><p>9176</p></td>
+<td><p>2.18</p></td>
+<td><p>0.089185</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>iteration-0.1-0.1</p></td>
+<td><p>220</p></td>
+<td><p>2.2078</p></td>
+<td><p>0.061385</p></td>
+<td><p>261</p></td>
+<td><p>2.2495</p></td>
+<td><p>0.019685</p></td>
+<td><p>340</p></td>
+<td><p>2.2629</p></td>
+<td><p>0.006285</p></td>
+<td><p>323</p></td>
+<td><p>0.9468</p></td>
+<td><p>0.048173</p></td>
+<td></td>
+<td><p>0.91</p></td>
+<td><p>0.000239</p></td>
+<td><p>304</p></td>
+<td><p>0.8235</p></td>
+<td><p>0.028028</p></td>
+<td><p>301</p></td>
+<td><p>0.7432</p></td>
+<td><p>0.064407</p></td>
+<td><p>452</p></td>
+<td><p>2.2078</p></td>
+<td><p>0.061385</p></td>
+<td><p>528</p></td>
+<td><p>2.1835</p></td>
+<td><p>0.085685</p></td>
+</tr>
+<tr class="row-odd"><td><p>iteration-0.1-0.25</p></td>
+<td><p>219</p></td>
+<td><p>2.2689</p></td>
+<td><p>0.000285</p></td>
+<td><p>268</p></td>
+<td><p>2.2422</p></td>
+<td><p>0.026985</p></td>
+<td><p>355</p></td>
+<td><p>2.2792</p></td>
+<td><p>0.010015</p></td>
+<td><p>321</p></td>
+<td><p>0.9521</p></td>
+<td><p>0.042873</p></td>
+<td><p>304</p></td>
+<td><p>0.8713</p></td>
+<td><p>0.038939</p></td>
+<td><p>319</p></td>
+<td><p>0.7972</p></td>
+<td><p>0.054328</p></td>
+<td><p>297</p></td>
+<td><p>0.7525</p></td>
+<td><p>0.055107</p></td>
+<td><p>449</p></td>
+<td><p>2.2422</p></td>
+<td><p>0.026985</p></td>
+<td><p>564</p></td>
+<td><p>2.2263</p></td>
+<td><p>0.042885</p></td>
+</tr>
+<tr class="row-even"><td><p>iteration-0.1-0.4</p></td>
+<td><p>216</p></td>
+<td><p>2.2364</p></td>
+<td><p>0.032785</p></td>
+<td><p>258</p></td>
+<td><p>2.2954</p></td>
+<td><p>0.026215</p></td>
+<td><p>355</p></td>
+<td><p>2.2367</p></td>
+<td><p>0.032485</p></td>
+<td><p>277</p></td>
+<td><p>0.9392</p></td>
+<td><p>0.055773</p></td>
+<td><p>278</p></td>
+<td><p>0.8811</p></td>
+<td><p>0.029139</p></td>
+<td><p>289</p></td>
+<td><p>0.8301</p></td>
+<td><p>0.021428</p></td>
+<td><p>310</p></td>
+<td><p>0.808</p></td>
+<td><p>0.000393</p></td>
+<td><p>457</p></td>
+<td><p>2.2364</p></td>
+<td><p>0.032785</p></td>
+<td><p>827</p></td>
+<td><p>2.2144</p></td>
+<td><p>0.054785</p></td>
+</tr>
+<tr class="row-odd"><td><p>iteration-0.05-0.1</p></td>
+<td><p>287</p></td>
+<td><p>2.2084</p></td>
+<td><p>0.060785</p></td>
+<td><p>328</p></td>
+<td><p>2.2426</p></td>
+<td><p>0.026585</p></td>
+<td><p>461</p></td>
+<td><p>2.2931</p></td>
+<td><p>0.023915</p></td>
+<td><p>395</p></td>
+<td><p>0.9737</p></td>
+<td><p>0.021273</p></td>
+<td><p>369</p></td>
+<td><p>0.9019</p></td>
+<td><p>0.008339</p></td>
+<td><p>359</p></td>
+<td><p>0.8198</p></td>
+<td><p>0.031728</p></td>
+<td><p>369</p></td>
+<td><p>0.747</p></td>
+<td><p>0.060607</p></td>
+<td><p>570</p></td>
+<td><p>2.2605</p></td>
+<td><p>0.008685</p></td>
+<td><p>673</p></td>
+<td><p>2.2226</p></td>
+<td><p>0.046585</p></td>
+</tr>
+<tr class="row-even"><td><p>iteration-0.05-0.25</p></td>
+<td><p>287</p></td>
+<td><p>2.2549</p></td>
+<td><p>0.014285</p></td>
+<td><p>314</p></td>
+<td><p>2.2256</p></td>
+<td><p>0.043585</p></td>
+<td><p>399</p></td>
+<td><p>2.2457</p></td>
+<td><p>0.023485</p></td>
+<td><p>362</p></td>
+<td><p>0.9549</p></td>
+<td><p>0.040073</p></td>
+<td><p>369</p></td>
+<td><p>0.881</p></td>
+<td><p>0.029239</p></td>
+<td><p>366</p></td>
+<td><p>0.8386</p></td>
+<td><p>0.012928</p></td>
+<td><p>369</p></td>
+<td><p>0.7496</p></td>
+<td><p>0.058007</p></td>
+<td><p>544</p></td>
+<td><p>2.2837</p></td>
+<td><p>0.014515</p></td>
+<td><p>611</p></td>
+<td><p>2.2275</p></td>
+<td><p>0.041685</p></td>
+</tr>
+<tr class="row-odd"><td><p>iteration-0.05-0.4</p></td>
+<td><p>259</p></td>
+<td><p>2.2794</p></td>
+<td><p>0.010215</p></td>
+<td><p>316</p></td>
+<td><p>2.2259</p></td>
+<td><p>0.043285</p></td>
+<td><p>418</p></td>
+<td><p>2.2747</p></td>
+<td><p>0.005515</p></td>
+<td><p>348</p></td>
+<td><p>0.9517</p></td>
+<td><p>0.043273</p></td>
+<td><p>377</p></td>
+<td><p>0.8994</p></td>
+<td><p>0.010839</p></td>
+<td><p>360</p></td>
+<td><p>0.8175</p></td>
+<td><p>0.034028</p></td>
+<td><p>364</p></td>
+<td><p>0.7581</p></td>
+<td><p>0.049507</p></td>
+<td><p>519</p></td>
+<td><p>2.2924</p></td>
+<td><p>0.023215</p></td>
+<td><p>650</p></td>
+<td><p>2.2234</p></td>
+<td><p>0.045785</p></td>
+</tr>
+<tr class="row-even"><td><p>iteration-0.02-0.1</p></td>
+<td><p>326</p></td>
+<td><p>2.2374</p></td>
+<td><p>0.031785</p></td>
+<td><p>396</p></td>
+<td><p>2.2328</p></td>
+<td><p>0.036385</p></td>
+<td><p>531</p></td>
+<td><p>2.2839</p></td>
+<td><p>0.014715</p></td>
+<td><p>457</p></td>
+<td><p>0.977</p></td>
+<td><p>0.017973</p></td>
+<td><p>477</p></td>
+<td><p>0.8875</p></td>
+<td><p>0.022739</p></td>
+<td><p>473</p></td>
+<td><p>0.8262</p></td>
+<td><p>0.025328</p></td>
+<td><p>516</p></td>
+<td><p>0.7479</p></td>
+<td><p>0.059707</p></td>
+<td><p>667</p></td>
+<td><p>2.2599</p></td>
+<td><p>0.009285</p></td>
+<td><p>789</p></td>
+<td><p>2.2077</p></td>
+<td><p>0.061485</p></td>
+</tr>
+<tr class="row-odd"><td><p>iteration-0.02-0.25</p></td>
+<td><p>311</p></td>
+<td><p>2.2479</p></td>
+<td><p>0.021285</p></td>
+<td><p>391</p></td>
+<td><p>2.2479</p></td>
+<td><p>0.021285</p></td>
+<td><p>523</p></td>
+<td><p>2.2843</p></td>
+<td><p>0.015115</p></td>
+<td><p>445</p></td>
+<td><p>0.9671</p></td>
+<td><p>0.027873</p></td>
+<td><p>445</p></td>
+<td><p>0.8986</p></td>
+<td><p>0.011639</p></td>
+<td><p>463</p></td>
+<td><p>0.8285</p></td>
+<td><p>0.023028</p></td>
+<td><p>465</p></td>
+<td><p>0.7542</p></td>
+<td><p>0.053407</p></td>
+<td><p>648</p></td>
+<td><p>2.2237</p></td>
+<td><p>0.045485</p></td>
+<td><p>777</p></td>
+<td><p>2.2043</p></td>
+<td><p>0.064885</p></td>
+</tr>
+<tr class="row-even"><td><p>iteration-0.02-0.4</p></td>
+<td><p>336</p></td>
+<td><p>2.1557</p></td>
+<td><p>0.113485</p></td>
+<td><p>418</p></td>
+<td><p>2.23</p></td>
+<td><p>0.039185</p></td>
+<td><p>499</p></td>
+<td><p>2.2477</p></td>
+<td><p>0.021485</p></td>
+<td><p>480</p></td>
+<td><p>0.9532</p></td>
+<td><p>0.041773</p></td>
+<td><p>447</p></td>
+<td><p>0.8973</p></td>
+<td><p>0.012939</p></td>
+<td><p>445</p></td>
+<td><p>0.8198</p></td>
+<td><p>0.031728</p></td>
+<td><p>444</p></td>
+<td><p>0.7528</p></td>
+<td><p>0.054807</p></td>
+<td><p>670</p></td>
+<td><p>2.2454</p></td>
+<td><p>0.023785</p></td>
+<td><p>806</p></td>
+<td><p>2.2218</p></td>
+<td><p>0.047385</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="codes">
+<h2>Codes<a class="headerlink" href="#codes" title="Permalink to this headline">¶</a></h2>
+<p>Confusion model: confusion_svd.py</p>
+<p>Swipe window model: swipe_window_pca.py</p>
+<p>Iteration model: iteration.py</p>
+<p>Generate dataset: general.py</p>
+<p>Test generalization: test.py</p>
 </div>
 </div>
 
